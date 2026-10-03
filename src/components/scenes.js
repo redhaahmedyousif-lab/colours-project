@@ -55,6 +55,26 @@ const scenes = {
       { id: 'gate', stops: [[0, '#38bdf8'], [1, '#bae6fd']] },
     ),
 
+  gateNight: () =>
+    wrap(
+      `
+      ${Array.from({ length: 28 }, (_, i) => `<circle cx="${(i * 73) % 400}" cy="${(i * 37) % 80 + 6}" r="${i % 3 ? 0.9 : 1.5}" fill="#fff" opacity="${0.35 + (i % 4) * 0.15}"/>`).join('')}
+      <ellipse cx="200" cy="170" rx="230" ry="110" fill="#fef9c3" opacity=".10"/>
+      <rect x="40" y="110" width="320" height="150" fill="#f8fafc"/>
+      <rect x="40" y="96" width="320" height="18" fill="#e2e8f0"/>
+      ${Array.from({ length: 16 }, (_, i) => `<rect x="${44 + i * 20}" y="84" width="10" height="14" fill="#e2e8f0"/>`).join('')}
+      <path d="M150 260 V170 a50 50 0 0 1 100 0 V260 z" fill="#fde68a"/>
+      <path d="M160 260 V172 a40 40 0 0 1 80 0 V260 z" fill="#f59e0b" opacity=".55"/>
+      ${[70, 290].map((x) => `<path d="M${x} 210 V170 a20 20 0 0 1 40 0 V210 z" fill="#fcd34d" opacity=".85"/>`).join('')}
+      ${[70, 290].map((x) => `<rect x="${x + 4}" y="128" width="32" height="24" rx="4" fill="#1e293b" opacity=".55"/>`).join('')}
+      <line x1="200" y1="58" x2="200" y2="118" stroke="#cbd5e1" stroke-width="2"/>
+      <rect x="200" y="58" width="44" height="28" fill="#ce1126"/>
+      <path d="M200 58 h12 l-4 2.8 4 2.8 -4 2.8 4 2.8 -4 2.8 4 2.8 -4 2.8 4 2.8 -4 2.8 4 2.8 h-12z" fill="#fff"/>
+      <path d="M40 260 L0 260 L40 110 Z M360 260 L400 260 L360 110 Z" fill="#fef9c3" opacity=".08"/>
+      <rect y="250" width="400" height="10" fill="#334155"/>`,
+      { id: 'gateNight', stops: [[0, '#020617'], [0.6, '#0b1026'], [1, '#1e1b4b']] },
+    ),
+
   houses: () =>
     wrap(
       `

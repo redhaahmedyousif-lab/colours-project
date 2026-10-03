@@ -1,8 +1,8 @@
 import { $, $$, esc, icons, timeAgo } from '../lib/dom.js';
 import { load, save, uid } from '../lib/storage.js';
 import { toast } from '../lib/ui.js';
-import { pageHero } from '../components/sections.js';
-import { entries as seedEntries, foods, isSampleData, method, reactions, variables } from '../data/taste.js';
+import { pageHero, statement } from '../components/sections.js';
+import { entries as seedEntries, foods, isSampleData, method, project, reactions, variables } from '../data/taste.js';
 
 const STORE_KEY = 'taste-entries';
 const foodById = Object.fromEntries(foods.map((f) => [f.id, f]));
@@ -39,10 +39,11 @@ export function renderTaste(main) {
     ${pageHero({
       number: 2,
       kicker: 'Colour & Taste',
-      title: 'Do we taste with our eyes?',
-      text: 'An experiment that recoloured five everyday foods, without changing their recipes, to find out whether colour changes how food tastes. Here are the foods, people’s reactions and what the results tell us.',
+      title: project.title,
+      text: 'Do we taste with our eyes? Five everyday foods were recoloured, without changing their recipes, to find out whether colour changes how food tastes.',
       accent: 'from-blue-500/25 via-emerald-400/20 to-transparent',
     })}
+    ${statement({ title: project.title, en: project.en, ar: project.ar })}
     ${setup()}
     ${foodsSection()}
     <section class="container-page py-20" aria-labelledby="results-title">
@@ -496,7 +497,7 @@ function evaluation(s) {
           <div>
             <h3 class="font-sans text-base font-semibold">Why it happens</h3>
             <p class="mt-2 text-sm leading-relaxed text-ink-soft">
-              Our brains combine information from all our senses. Colour creates an <em>expectation</em> of flavour before food reaches our mouth — green suggests mint, black suggests bitterness.
+              Our brains combine information from all our senses. Colour creates an <em>expectation</em> of flavour before food reaches our mouth — green suggests mint, orange suggests sweetness.
               Scientists have shown this too: in a well-known 2001 study, wine students described white wine dyed red using words normally reserved for red wine.
             </p>
           </div>

@@ -6,6 +6,13 @@
  */
 export const isSampleData = true;
 
+/** Project 2 statement (final bilingual text). */
+export const project = {
+  title: "Colour & Taste Experiment",
+  en: "We conducted an interactive sensory experiment to investigate if colour changes taste perception. We altered the colours of five foods, such as blue rice and green milk, and recorded people's reactions. The most surprising result was the blue rice; my brother stated it looked like paint and initially hesitated to taste it! Meanwhile, orange-tinted pancakes were perceived as sweeter than normal ones. This proves that the human brain relies heavily on visual colour cues before taste buds even process the chemical reality.",
+  ar: "قمنا بتنفيذ تجربة حسية وعلمية تفاعلية دقيقة لاختبار ما إذا كان للبصر سلطان على حاسة التذوق. تمثلت المنهجية في تغيير ألوان خمسة أطعمة ومشروبات مختلفة باستخدام ملونات معتمدة (مثل الأرز الأزرق والحليب الأخضر)، ثم طلبنا من أفراد العائلة والأصدقاء تذوقها وتسجيل ردود أفعالهم الفورية. كانت النتيجة الأكثر إثارة للدهشة هي 'الأرز الأزرق'؛ حيث أكد أخي بتعجب أنه يبدو وكأنه طلاء، وتردد كثيراً قبل أن يقدم على تذوقه رغم تطابق مكوناته! وفي المقابل، وُجِدت الفطائر الملونة بالبرتقال أكثر حلاوة في الإدراك البصري مقارنة بالفطائر العادية. تؤكد هذه التجربة علمياً أن الدماغ البشري يعتمد بشكل رئيسي ومبكر على الإشارات البصرية للألوان قبل أن تبدأ براعم التذوق في معالجة الحقيقة الكيميائية للطعام.",
+};
+
 export const foods = [
   {
     id: 'rice',
@@ -52,15 +59,15 @@ export const foods = [
     note: 'Classic chickpea hummus with no change to the recipe, only the colour.',
   },
   {
-    id: 'lemonade',
-    short: 'Lemonade',
-    name: 'Black lemonade',
-    emoji: '🍋',
-    natural: '#f3e9a6',
-    naturalName: 'pale yellow',
-    changed: '#1f2937',
-    changedName: 'black',
-    note: 'Fresh lemon and mint juice, turned an inky black.',
+    id: 'pancakes',
+    short: 'Pancakes',
+    name: 'Orange pancakes',
+    emoji: '🥞',
+    natural: '#e2b36b',
+    naturalName: 'golden',
+    changed: '#f97316',
+    changedName: 'orange',
+    note: 'The usual pancake batter, tinted bright orange before cooking.',
   },
 ];
 
@@ -80,7 +87,7 @@ export const variables = {
 
 // Example entries — replace with your own observations.
 const raw = [
-  ['rice', 'Ahmed', 2, 3, 'yes', '😬', 'It looked like play dough. I thought it would taste like chemicals.'],
+  ['rice', 'Ahmed', 2, 3, 'yes', '😬', 'It looked like paint. I hesitated before tasting it.'],
   ['rice', 'Fatima', 1, 4, 'unsure', '😮', 'Once I closed my eyes it was just normal machboos!'],
   ['rice', 'Yousif', 2, 2, 'yes', '🤢', 'My brain kept telling me it was wrong. Felt less spicy.'],
   ['rice', 'Noor', 3, 4, 'no', '😄', 'Fun colour. Tastes the same as my mum’s.'],
@@ -96,10 +103,10 @@ const raw = [
   ['hummus', 'Abdulla', 3, 4, 'unsure', '😐', 'Maybe a little sweeter? Hard to say.'],
   ['hummus', 'Huda', 4, 5, 'no', '😄', 'Delicious. The colour made it feel special.'],
   ['hummus', 'Jassim', 2, 3, 'yes', '😬', 'Expected a sweet taste, so the garlic surprised me.'],
-  ['lemonade', 'Mohammed', 1, 3, 'yes', '😮', 'Looked like oil or coffee. The lemon taste was a shock.'],
-  ['lemonade', 'Aisha', 2, 4, 'unsure', '😮', 'Once I tasted it I liked it, but I was nervous.'],
-  ['lemonade', 'Salman', 1, 2, 'yes', '🤢', 'It tasted bitter to me, like medicine.'],
-  ['lemonade', 'Dana', 2, 4, 'no', '😄', 'Cool and mysterious. Same refreshing lemonade.'],
+  ['pancakes', 'Mohammed', 4, 5, 'yes', '😄', 'These taste sweeter than normal pancakes!'],
+  ['pancakes', 'Aisha', 4, 4, 'yes', '😄', 'Like orange flavour was added, even though it wasn’t.'],
+  ['pancakes', 'Salman', 3, 4, 'unsure', '😐', 'Maybe a little sweeter? The colour looks fun.'],
+  ['pancakes', 'Dana', 4, 5, 'yes', '😮', 'Sweeter and fruitier. I would eat these again.'],
 ];
 
 const start = Date.UTC(2026, 8, 14, 10);

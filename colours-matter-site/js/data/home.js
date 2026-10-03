@@ -1,4 +1,8 @@
 import { jarSvg } from '../components/jar.js';
+import { sceneSvg } from '../components/scenes.js';
+import { project as artProject } from './art.js';
+import { project as tasteProject } from './taste.js';
+import { project as blogProject } from './blog.js';
 
 export const pillars = [
   {
@@ -110,29 +114,12 @@ const tasteArt = `
     <ellipse cx="310" cy="85" rx="21" ry="4" fill="#4ade80"/>
   </svg>`;
 
-const blogArt = `
-  <svg viewBox="0 0 400 210" class="h-full w-full" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
-    <rect y="150" width="400" height="60" fill="#78350f" opacity=".5"/>
-    ${[30, 130, 230, 330]
-      .map(
-        (x, i) => `
-      <path d="M${x} 210 V95 a40 40 0 0 1 80 0 V210 z" fill="#fef3c7" opacity=".18"/>
-      <path d="M${x + 8} 210 V98 a32 32 0 0 1 64 0 V210 z" fill="#1c1917" opacity=".35"/>
-      <path d="M${x + 4} 120 h72 l-8 18 h-56 z" fill="${['#dc2626', '#f59e0b', '#0f766e', '#7c3aed'][i]}"/>
-      <line x1="${x + 40}" y1="40" x2="${x + 40}" y2="62" stroke="#fde68a" stroke-width="1.5"/>
-      <path d="M${x + 32} 62 h16 l4 14 h-24 z" fill="${['#f59e0b', '#ef4444', '#facc15', '#22d3ee'][i]}"/>
-      <circle cx="${x + 40}" cy="74" r="9" fill="#fde68a" opacity=".55"/>`,
-      )
-      .join('')}
-    ${Array.from({ length: 9 }, (_, i) => `<circle cx="${30 + i * 42}" cy="${178 + (i % 2) * 6}" r="11" fill="${['#ea580c', '#b91c1c', '#ca8a04', '#15803d', '#9a3412', '#facc15', '#be123c', '#65a30d', '#c2410c'][i]}"/>`).join('')}
-  </svg>`;
-
 export const projects = [
   {
     path: '/art',
     kicker: 'Art presentation',
-    title: "The A'ali Pottery Jar",
-    text: 'A close look at Bahrain’s famous clay pottery: its earthy browns and emerald glazes, and the moods and cultural meaning behind them.',
+    title: artProject.title,
+    text: 'A traditional A’ali pottery jar drawn as a symbol of Bahraini heritage: its deep browns and warm oranges, and the calm, rooted feelings they bring.',
     tags: ['Heritage', 'Colour psychology', 'Presentation'],
     gradient: 'linear-gradient(135deg,#064e3b,#0f766e 45%,#c98b5e)',
     art: `<div class="flex h-full items-end justify-center pt-6">${jarSvg({ className: 'h-[92%] drop-shadow-2xl' })}</div>`,
@@ -140,8 +127,8 @@ export const projects = [
   {
     path: '/taste',
     kicker: 'Experiment & results',
-    title: 'Colour & Taste',
-    text: 'Blue rice? Green milk? Five everyday foods change colour to test whether what we see changes what we taste. See the reactions and results.',
+    title: tasteProject.title,
+    text: 'Blue rice? Green milk? Orange pancakes? Five foods changed colour to test whether what we see changes what we taste. See the reactions and results.',
     tags: ['Experiment', 'Data', 'Senses'],
     gradient: 'linear-gradient(135deg,#1e3a8a,#2563eb 50%,#22c55e)',
     art: tasteArt,
@@ -149,10 +136,10 @@ export const projects = [
   {
     path: '/blog',
     kicker: 'Community blog',
-    title: 'Colourful Bahrain',
-    text: 'A photo blog of the most colourful places in Bahrain, from Manama Souq to the Tree of Life — and how they make us feel. Leave your own comments.',
+    title: blogProject.title,
+    text: 'Bab Al Bahrain glowing under the night sky, plus more colourful places across Bahrain and how they make us feel. Leave your own comments.',
     tags: ['Photography', 'Places', 'Comments'],
-    gradient: 'linear-gradient(135deg,#7c2d12,#ea580c 50%,#facc15)',
-    art: blogArt,
+    gradient: 'linear-gradient(135deg,#020617,#1e1b4b)',
+    art: sceneSvg('gateNight'),
   },
 ];

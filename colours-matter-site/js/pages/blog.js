@@ -1,14 +1,15 @@
 import { $, $$, esc, icons, timeAgo } from '../lib/dom.js';
 import { load, save, uid } from '../lib/storage.js';
 import { openModal, toast } from '../lib/ui.js';
-import { pageHero } from '../components/sections.js';
+import { pageHero, statement } from '../components/sections.js';
 import { abstractScene, sceneSvg } from '../components/scenes.js';
-import { posts as seedPosts, seedComments } from '../data/blog.js';
+import { posts as seedPosts, project, seedComments } from '../data/blog.js';
 
 const KEYS = { posts: 'blog-posts', likes: 'blog-likes', comments: 'blog-comments' };
 const state = { mood: 'All', sort: 'latest' };
 
 const allPosts = () => [...load(KEYS.posts, []), ...seedPosts];
+const feedPosts = () => allPosts().filter((p) => p.id !== project.postId);
 const likedSet = () => new Set(load(KEYS.likes, []));
 const userComments = () => load(KEYS.comments, {});
 const commentsFor = (id) => [...(seedComments[id] ?? []), ...(userComments()[id] ?? [])].sort((a, b) => a.createdAt - b.createdAt);
@@ -34,14 +35,18 @@ export function renderBlog(main) {
     ${pageHero({
       number: 3,
       kicker: 'Colour Blog',
-      title: 'Colourful Bahrain',
-      text: 'A community photo blog celebrating the most colourful corners of our island — and the feelings they give us. Read the stories, like your favourites and leave a comment.',
-      accent: 'from-orange-400/30 via-amber-300/20 to-transparent',
+      title: project.title,
+      text: 'A community photo blog celebrating the most colourful corners of our island and the feelings they give us. Read the stories, like your favourites and leave a comment.',
+      accent: 'from-indigo-500/25 via-amber-300/20 to-transparent',
     })}
+    <div data-feature></div>
+    <section class="container-page" aria-labelledby="more-places">
+      <h2 id="more-places" class="mb-6 text-3xl font-semibold">More colourful places</h2>
+    </section>
     <section class="container-page" aria-label="Blog posts">
       <div class="reveal flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by feeling" data-moods></div>
-        <div class="flex items-center gap-3">
+        <div class="flex flex-wrap items-center gap-3">
           <label class="flex items-center gap-2 text-sm text-ink-muted">Sort
             <select class="field !w-auto !py-2" data-sort>
               <option value="latest">Latest</option>
@@ -61,28 +66,67 @@ export function renderBlog(main) {
     renderFeed(main);
   });
   $('[data-share]', main).addEventListener('click', () => openShare(main));
-  $('[data-feed]', main).addEventListener('click', (e) => {
+  const onClick = (e) => {
     const like = e.target.closest('[data-like]');
     if (like) {
       e.preventDefault();
       toggleLike(like.dataset.like);
       renderFeed(main);
+      renderFeature(main);
       return;
     }
     const open = e.target.closest('[data-open]');
     if (open) openPost(open.dataset.open, main);
-  });
+  };
+  main.addEventListener('click', onClick);
 
+  renderFeature(main);
   renderMoods(main);
   renderFeed(main);
 
   // Deep link: #/blog?post=manama-souq opens a post directly.
   const id = new URLSearchParams(location.hash.split('?')[1]).get('post');
   if (id && allPosts().some((p) => p.id === id)) openPost(id, main);
+
+  return () => main.removeEventListener('click', onClick);
+}
+
+function renderFeature(main) {
+  const post = allPosts().find((p) => p.id === project.postId);
+  const el = $('[data-feature]', main);
+  if (!post || !el) return;
+  const liked = likedSet();
+  const isLiked = liked.has(post.id);
+  const comments = commentsFor(post.id).length;
+  el.innerHTML = `
+    <section class="container-page pb-6" aria-label="Featured photo">
+      <button type="button" data-open="${esc(post.id)}" class="group relative block aspect-[16/9] w-full max-w-full overflow-hidden rounded-[2rem] shadow-2xl ring-1 ring-line sm:aspect-[21/9]" aria-label="Open ${esc(post.title)} and its comments">
+        <span class="absolute inset-0 block transition duration-700 group-hover:scale-[1.03]">${media(post)}</span>
+        <span class="absolute inset-x-0 bottom-0 flex h-2">${post.colours.map((c) => `<span class="flex-1" style="background:${c}"></span>`).join('')}</span>
+        <span class="absolute top-4 left-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-stone-900 shadow">★ Featured photo</span>
+      </button>
+    </section>
+    ${statement({
+      eyebrow: 'Featured post',
+      title: project.title,
+      enHeading: post.title,
+      arHeading: post.titleAr,
+      en: post.feeling,
+      ar: post.feelingAr,
+      footer: `
+        <div class="flex items-center gap-1 text-sm">
+          <button type="button" data-like="${esc(post.id)}" aria-pressed="${isLiked}" aria-label="${isLiked ? 'Unlike' : 'Like'} ${esc(post.title)}"
+            class="${isLiked ? 'is-liked text-rose-600 dark:text-rose-400' : 'text-ink-muted'} inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 transition hover:bg-surface-2">
+            ${icons.heart}<span class="tabular-nums">${likeCount(post, liked)}</span>
+          </button>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-ink-muted">${icons.comment}<span class="tabular-nums">${comments}</span></span>
+        </div>
+        <button type="button" data-open="${esc(post.id)}" class="btn btn-primary">${icons.comment} Leave a comment · <span lang="ar" class="font-arabic">اترك تعليقاً</span></button>`,
+    })}`;
 }
 
 function renderMoods(main) {
-  const moods = ['All', ...new Set(allPosts().flatMap((p) => p.mood))];
+  const moods = ['All', ...new Set(feedPosts().flatMap((p) => p.mood))];
   if (!moods.includes(state.mood)) state.mood = 'All';
   const wrap = $('[data-moods]', main);
   wrap.innerHTML = moods
@@ -99,7 +143,7 @@ function renderMoods(main) {
 
 function sortedPosts() {
   const liked = likedSet();
-  const list = allPosts().filter((p) => state.mood === 'All' || p.mood.includes(state.mood));
+  const list = feedPosts().filter((p) => state.mood === 'All' || p.mood.includes(state.mood));
   const by = {
     latest: (a, b) => new Date(b.date) - new Date(a.date),
     loved: (a, b) => likeCount(b, liked) - likeCount(a, liked),
@@ -182,6 +226,11 @@ function openPost(id, main) {
             <div class="mt-3 flex flex-wrap gap-1.5">${post.mood.map((m) => `<span class="chip">${esc(m)}</span>`).join('')}</div>
             <h3 class="mt-6 font-sans text-sm font-semibold tracking-wide text-ink-muted uppercase">How it makes me feel</h3>
             <p class="mt-2 font-display text-xl leading-snug">${esc(post.feeling)}</p>
+            ${post.feelingAr ? `
+            <div lang="ar" dir="rtl" class="mt-6 rounded-2xl bg-surface-2 p-5 font-arabic">
+              ${post.titleAr ? `<p class="font-semibold">${esc(post.titleAr)}</p>` : ''}
+              <p class="mt-2 leading-[2.1] text-ink-soft">${esc(post.feelingAr)}</p>
+            </div>` : ''}
             <h3 class="mt-6 font-sans text-sm font-semibold tracking-wide text-ink-muted uppercase">About the place</h3>
             <p class="mt-2 leading-relaxed text-ink-soft">${esc(post.description)}</p>
             <div class="mt-4 flex flex-wrap items-center gap-3 text-xs text-ink-muted">
@@ -241,6 +290,7 @@ function openPost(id, main) {
         if (location.hash.startsWith('#/blog?post=')) {
           setUrl('#/blog');
           renderFeed(main);
+          renderFeature(main);
         }
       };
     },

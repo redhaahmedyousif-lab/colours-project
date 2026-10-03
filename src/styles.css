@@ -10,6 +10,7 @@
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Fraunces', ui-serif, Georgia, serif;
+  --font-arabic: 'Noto Naskh Arabic', 'Geeza Pro', 'Traditional Arabic', Tahoma, serif;
 
   --color-canvas: var(--cm-canvas);
   --color-surface: var(--cm-surface);
@@ -93,6 +94,11 @@
     transition:
       background-color 0.3s ease,
       color 0.3s ease;
+  }
+  .font-arabic,
+  .font-arabic h3 {
+    font-family: var(--font-arabic);
+    letter-spacing: 0;
   }
   h1,
   h2,
