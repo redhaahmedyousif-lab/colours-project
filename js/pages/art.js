@@ -13,7 +13,7 @@ export function renderArt(main) {
       text: "A showcase of Bahrain’s best-known craft: the hand-thrown clay jar of A'ali. Discover its earthy palette of deep brown, warm orange and emerald glaze, and the moods and meaning behind every shade.",
       accent: 'from-emerald-glaze/30 via-clay-light/25 to-transparent',
     })}
-    ${statement({ title: project.title, en: project.en, ar: project.ar })}
+    ${statement({ title: project.title, en: project.en })}
     ${showcase()}
     ${about()}
     ${paletteSection()}
