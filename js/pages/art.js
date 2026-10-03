@@ -1,18 +1,19 @@
 import { $, $$, esc, icons } from '../lib/dom.js';
 import { toast } from '../lib/ui.js';
 import { glazeJar, jarSvg } from '../components/jar.js';
-import { pageHero } from '../components/sections.js';
-import { glazes, palette, process, slides } from '../data/art.js';
+import { pageHero, statement } from '../components/sections.js';
+import { glazes, palette, process, project, slides } from '../data/art.js';
 
 export function renderArt(main) {
   main.innerHTML = `
     ${pageHero({
       number: 1,
       kicker: 'Art Presentation',
-      title: "The colours of A'ali pottery",
-      text: "A showcase of Bahrain’s best-known craft: the hand-thrown clay jar of A'ali. Discover its earthy palette of emerald green and warm brown, and the moods and meaning behind every shade.",
+      title: project.title,
+      text: "A showcase of Bahrain’s best-known craft: the hand-thrown clay jar of A'ali. Discover its earthy palette of deep brown, warm orange and emerald glaze, and the moods and meaning behind every shade.",
       accent: 'from-emerald-glaze/30 via-clay-light/25 to-transparent',
     })}
+    ${statement({ title: project.title, en: project.en, ar: project.ar })}
     ${showcase()}
     ${about()}
     ${paletteSection()}

@@ -4,7 +4,31 @@
  * Each post uses an illustrated `scene`. To use your own photograph instead,
  * put the file in /public/photos and add e.g. `image: './photos/souq.jpg'`.
  */
+/** Project 3 feature post (final bilingual text). */
+export const project = {
+  title: "Colour Blog: Bab Al Bahrain at Night",
+  postId: 'bab-al-bahrain-night',
+};
+
 export const posts = [
+  {
+    id: 'bab-al-bahrain-night',
+    title: "The Grandeur of Bab Al Bahrain at Night",
+    titleAr: "شموخ باب البحرين ليلاً",
+    location: 'Bab Al Bahrain, Manama',
+    scene: 'gateNight',
+    // Add your photo: put it in /photos and uncomment the next line.
+    // image: './photos/bab-al-bahrain-night.jpg',
+    colours: ['#0b1026', '#f8fafc', '#ce1126', '#fbbf24'],
+    mood: ['Proud', 'Tranquil'],
+    feeling: "I captured this exceptional photograph of the historical Bab Al Bahrain glowing with bright white lights under the night sky, topped by our majestic national flag. The visual contrast between the dark night and the brilliant illumination over traditional architecture evokes deep feelings of pride and tranquility. These warm lights remind us of the enduring spirit of our capital, reflecting the rich visual identity of our Bahraini community. What do you think of our city's heritage illumination at night? Leave a comment below!",
+    feelingAr: "لقد وقع اختياري على التقاط هذه الصورة الاستثنائية لمعالم باب البحرين التاريخي وهو يتألق بإضاءاته البيضاء الساطعة تحت جنح الليل، ويعلوه علم الوطن بشامخه الأحمر والأبيض. إن التباين البصري بين عتمة الليل وسطوع الإنارة الباهرة على العمارة التقليدية يمنح النفس شعوراً عميقاً بالفخر والاعتزاز والسكينة. تذكرنا هذه الإضاءات الدافئة بروح الأصالة المتجددة في قلب العاصمة، وتجسد الهوية البصرية العريقة لمجتمعنا البحريني المترابط. ما رأيك في جمال الإضاءة التراثية لمدينتنا ليلاً؟ شاركنا برأيك واترك تعليقاً في الأسفل!",
+    description:
+      'Bab Al Bahrain is the historic gateway at the entrance to Manama Souq. At night, bright white lights wash over its traditional architecture beneath the national flag.',
+    author: 'Class blog',
+    date: '2026-10-03',
+    likes: 34,
+  },
   {
     id: 'manama-souq',
     title: 'Manama Souq',
@@ -19,21 +43,6 @@ export const posts = [
     author: 'Class blog',
     date: '2026-09-02',
     likes: 24,
-  },
-  {
-    id: 'bab-al-bahrain',
-    title: 'Bab Al Bahrain',
-    location: 'Manama',
-    scene: 'gate',
-    colours: ['#f5ead6', '#38bdf8', '#ce1126', '#7c5a3a'],
-    mood: ['Proud', 'Welcomed'],
-    feeling:
-      'The cream-coloured gateway against the bright blue sky makes me feel proud. The little red and white flag on top is a reminder that this is home.',
-    description:
-      'This historic gateway marks the entrance to Manama Souq. Its pale stone glows in the afternoon sun, and the arches feel like they are welcoming everyone inside.',
-    author: 'Class blog',
-    date: '2026-09-05',
-    likes: 18,
   },
   {
     id: 'pearling-path',
@@ -114,6 +123,7 @@ export const posts = [
 
 /** Starter comments shown under posts. Visitors' own comments are added on top. */
 export const seedComments = {
+  'bab-al-bahrain-night': [],
   'manama-souq': [
     { name: 'Maryam', text: 'The spice colours are my favourite part too! It smells amazing.', createdAt: Date.UTC(2026, 8, 3, 15) },
     { name: 'Hamad', text: 'Beautiful description — I can almost smell the saffron. Great use of sensory language.', createdAt: Date.UTC(2026, 8, 4, 9) },
