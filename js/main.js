@@ -1,11 +1,11 @@
-import { $, observeReveals } from './lib/dom.js';
-import { closeActiveModal } from './lib/ui.js';
-import { renderFooter, renderHeader, setActiveNav } from './components/layout.js';
-import { routes, site } from './data/site.js';
-import { renderHome } from './pages/home.js';
-import { renderArt } from './pages/art.js';
-import { renderTaste } from './pages/taste.js';
-import { renderBlog } from './pages/blog.js';
+import { $, observeReveals } from './lib/dom.js?v=musvnmnp';
+import { closeActiveModal } from './lib/ui.js?v=musvnmnp';
+import { renderFooter, renderHeader, setActiveNav } from './components/layout.js?v=musvnmnp';
+import { routes, site } from './data/site.js?v=musvnmnp';
+import { renderHome } from './pages/home.js?v=musvnmnp';
+import { renderArt } from './pages/art.js?v=musvnmnp';
+import { renderTaste } from './pages/taste.js?v=musvnmnp';
+import { renderBlog } from './pages/blog.js?v=musvnmnp';
 
 const pages = {
   '/': renderHome,

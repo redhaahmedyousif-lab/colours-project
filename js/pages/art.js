@@ -1,8 +1,8 @@
-import { $, $$, esc, icons } from '../lib/dom.js';
-import { toast } from '../lib/ui.js';
-import { glazeJar, jarSvg } from '../components/jar.js';
-import { pageHero, statement } from '../components/sections.js';
-import { glazes, palette, process, project, slides } from '../data/art.js';
+import { $, $$, esc, icons } from '../lib/dom.js?v=musvnmnp';
+import { toast } from '../lib/ui.js?v=musvnmnp';
+import { glazeJar, jarSvg } from '../components/jar.js?v=musvnmnp';
+import { pageHero, statement } from '../components/sections.js?v=musvnmnp';
+import { glazes, palette, process, project, slides } from '../data/art.js?v=musvnmnp';
 
 export function renderArt(main) {
   main.innerHTML = `
