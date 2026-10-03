@@ -258,7 +258,7 @@ function logSection() {
             <p class="eyebrow">Results log</p>
             <h2 id="log-title" class="mt-2 text-2xl font-semibold">Every reaction, recorded</h2>
           </div>
-          <button type="button" class="btn btn-ghost !py-2 text-xs" data-export>Download CSV</button>
+          <button type="button" class="btn btn-ghost !py-2 text-xs" data-export>Copy as CSV</button>
         </div>
         <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
           <div class="flex flex-wrap gap-2" role="group" aria-label="Filter by food">
@@ -457,10 +457,11 @@ function wireLog(main) {
     const lines = allEntries().map((e) =>
       [foodById[e.food].name, e.tester, e.look, e.taste, differentLabel[e.different], e.reaction, e.comment].map(cell).join(','),
     );
-    const blob = new Blob(['﻿' + [header.join(','), ...lines].join('\n')], { type: 'text/csv;charset=utf-8' });
-    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'colour-taste-results.csv' });
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    const csv = [header.join(','), ...lines].join('\n');
+    navigator.clipboard
+      .writeText(csv)
+      .then(() => toast('Copied — paste into Excel or Google Sheets'))
+      .catch(() => toast('Copying is blocked here — try another browser'));
   });
 }
 

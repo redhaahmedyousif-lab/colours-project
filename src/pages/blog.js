@@ -13,6 +13,11 @@ const likedSet = () => new Set(load(KEYS.likes, []));
 const userComments = () => load(KEYS.comments, {});
 const commentsFor = (id) => [...(seedComments[id] ?? []), ...(userComments()[id] ?? [])].sort((a, b) => a.createdAt - b.createdAt);
 const likeCount = (post, liked) => (post.likes ?? 0) + (liked.has(post.id) ? 1 : 0);
+const setUrl = (hash) => {
+  try {
+    history.replaceState(null, '', hash);
+  } catch {}
+};
 const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
 function media(post, cls = '') {
@@ -163,7 +168,7 @@ function toggleLike(id) {
 function openPost(id, main) {
   const post = allPosts().find((p) => p.id === id);
   if (!post) return;
-  history.replaceState(null, '', `#/blog?post=${encodeURIComponent(id)}`);
+  setUrl(`#/blog?post=${encodeURIComponent(id)}`);
 
   const closeModal = openModal({
     title: post.title,
@@ -216,8 +221,13 @@ function openPost(id, main) {
           <ul data-comments class="mt-6 space-y-4"></ul>
         </section>`;
       wireComments(body, post);
-      $('[data-delete-post]', body)?.addEventListener('click', () => {
-        if (!confirm('Delete this post? This cannot be undone.')) return;
+      $('[data-delete-post]', body)?.addEventListener('click', (e) => {
+        const btn = e.currentTarget;
+        if (btn.dataset.armed !== 'true') {
+          btn.dataset.armed = 'true';
+          btn.lastChild.textContent = ' Tap again to delete';
+          return;
+        }
         save(KEYS.posts, load(KEYS.posts, []).filter((p) => p.id !== post.id));
         const all = userComments();
         delete all[post.id];
@@ -229,7 +239,7 @@ function openPost(id, main) {
       return () => {
         // Only tidy the URL if we're still on this post (not navigating away).
         if (location.hash.startsWith('#/blog?post=')) {
-          history.replaceState(null, '', '#/blog');
+          setUrl('#/blog');
           renderFeed(main);
         }
       };

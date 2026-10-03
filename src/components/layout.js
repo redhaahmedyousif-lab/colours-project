@@ -32,7 +32,7 @@ const brand = `
 
 export function renderHeader() {
   const header = $('#site-header');
-  header.className = 'sticky top-0 z-40 border-b border-line/70 bg-canvas/80 backdrop-blur-xl';
+  header.className = 'sticky top-[env(safe-area-inset-top,0px)] z-40 border-b border-line/70 bg-canvas/80 backdrop-blur-xl';
   header.innerHTML = `
     <nav class="container-page flex h-16 items-center justify-between gap-4" aria-label="Main">
       ${brand}
