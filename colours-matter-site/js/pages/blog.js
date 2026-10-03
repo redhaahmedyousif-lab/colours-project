@@ -105,6 +105,7 @@ function renderFeature(main) {
         <span class="absolute inset-x-0 bottom-0 flex h-2">${post.colours.map((c) => `<span class="flex-1" style="background:${c}"></span>`).join('')}</span>
         <span class="absolute top-4 left-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-stone-900 shadow">★ Featured photo</span>
       </button>
+      ${post.credit ? `<p class="mt-2 text-right text-xs text-ink-muted">${esc(post.credit)}</p>` : ''}
     </section>
     ${statement({
       eyebrow: 'Featured post',
@@ -220,6 +221,7 @@ function openPost(id, main) {
     render: (body) => {
       body.innerHTML = `
         <div class="relative -mx-5 -mt-6 aspect-[16/8] overflow-hidden sm:-mx-7">${media(post)}</div>
+        ${post.credit ? `<p class="mt-2 text-right text-xs text-ink-muted">${esc(post.credit)}</p>` : ''}
         <div class="mt-6 grid gap-8 md:grid-cols-[1.3fr_1fr]">
           <div>
             <p class="flex items-center gap-1.5 text-sm text-ink-muted">${icons.pin}${esc(post.location)} · ${esc(formatDate(post.date))}</p>

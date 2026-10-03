@@ -1,4 +1,5 @@
 import { $, $$, esc, icons } from '../lib/dom.js';
+import { openModal } from '../lib/ui.js';
 import { colourMeanings, pillars, projects } from '../data/home.js';
 import { site } from '../data/site.js';
 
@@ -18,6 +19,7 @@ export function renderHome(main) {
     $('#overview', main).scrollIntoView({ behavior: 'smooth' }),
   );
   wireExplorer(main);
+  showNotice();
 }
 
 function hero() {
@@ -244,4 +246,29 @@ function quote() {
       <a href="#/blog" class="btn relative mt-10 bg-white text-emerald-deep hover:-translate-y-0.5 hover:shadow-xl">Share where colour moves you ${icons.arrow}</a>
     </figure>
   </section>`;
+}
+
+export const NOTICE =
+  'Notice: This is a preliminary version of the website, and further updates will be made during this week. We kindly request your valuable feedback and notes to improve and refine it.';
+
+/** Preview notice: opens once per visit when the home page first loads. */
+let noticeShown = false;
+function showNotice() {
+  if (noticeShown) return;
+  noticeShown = true;
+  const close = openModal({
+    title: 'Preview version',
+    render: (body) => {
+      body.innerHTML = `
+        <div class="flex gap-4">
+          <span class="grid size-11 shrink-0 place-items-center rounded-2xl bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-200">${icons.info}</span>
+          <p class="text-base leading-relaxed text-ink" data-notice-text>${esc(NOTICE)}</p>
+        </div>
+        <div class="mt-7 flex flex-wrap justify-end gap-3">
+          <a href="#/blog?post=bab-al-bahrain-night" class="btn btn-ghost" data-notice-feedback>${icons.comment} Leave feedback</a>
+          <button type="button" class="btn btn-primary" data-notice-ok>Continue to the site</button>
+        </div>`;
+      body.querySelector('[data-notice-ok]').addEventListener('click', () => close());
+    },
+  });
 }

@@ -17,8 +17,10 @@ export const posts = [
     titleAr: "شموخ باب البحرين ليلاً",
     location: 'Bab Al Bahrain, Manama',
     scene: 'gateNight',
-    // Add your photo: put it in /photos and uncomment the next line.
-    // image: './photos/bab-al-bahrain-night.jpg',
+    image: './photos/bab-al-bahrain-night.jpg',
+    alt: 'Bab Al Bahrain lit with bright white lights at night, with the national flag flying above the gateway',
+    // Shown under the photo. The image carries a "Manama Story" watermark, so credit the source.
+    credit: 'Photo: Manama Story',
     colours: ['#0b1026', '#f8fafc', '#ce1126', '#fbbf24'],
     mood: ['Proud', 'Tranquil'],
     feeling: "I captured this exceptional photograph of the historical Bab Al Bahrain glowing with bright white lights under the night sky, topped by our majestic national flag. The visual contrast between the dark night and the brilliant illumination over traditional architecture evokes deep feelings of pride and tranquility. These warm lights remind us of the enduring spirit of our capital, reflecting the rich visual identity of our Bahraini community. What do you think of our city's heritage illumination at night? Leave a comment below!",

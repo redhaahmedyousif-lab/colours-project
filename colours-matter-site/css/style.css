@@ -85,6 +85,7 @@
     --color-amber-200: oklch(92.4% .12 95.746);
     --color-amber-300: oklch(87.9% .169 91.605);
     --color-amber-500: oklch(76.9% .188 70.08);
+    --color-amber-800: oklch(47.3% .137 46.201);
     --color-amber-900: oklch(41.4% .112 45.904);
     --color-emerald-400: oklch(76.5% .177 163.223);
     --color-blue-500: oklch(62.3% .214 259.815);
@@ -2252,6 +2253,10 @@
 
   .text-amber-500 {
     color: var(--color-amber-500);
+  }
+
+  .text-amber-800 {
+    color: var(--color-amber-800);
   }
 
   .text-amber-900 {
