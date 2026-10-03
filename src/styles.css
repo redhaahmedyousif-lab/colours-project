@@ -1,0 +1,232 @@
+@import 'tailwindcss';
+
+/* Class-based dark mode, toggled on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens. Semantic colours (canvas, surface, ink, line…) resolve to CSS
+ * variables so a single `.dark` class re-themes the whole app.
+ */
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces', ui-serif, Georgia, serif;
+
+  --color-canvas: var(--cm-canvas);
+  --color-surface: var(--cm-surface);
+  --color-surface-2: var(--cm-surface-2);
+  --color-ink: var(--cm-ink);
+  --color-ink-soft: var(--cm-ink-soft);
+  --color-ink-muted: var(--cm-ink-muted);
+  --color-line: var(--cm-line);
+
+  /* Project palette */
+  --color-emerald-glaze: #0f766e;
+  --color-emerald-deep: #064e3b;
+  --color-clay: #9a5b34;
+  --color-clay-light: #c98b5e;
+  --color-sand: #e9d8b8;
+  --color-pearl: #f6f1e7;
+  --color-dilmun-red: #ce1126;
+
+  --animate-float: float 9s ease-in-out infinite;
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(0, -24px, 0) scale(1.05);
+    }
+  }
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+:root {
+  color-scheme: light;
+  --cm-canvas: #faf7f2;
+  --cm-surface: #ffffff;
+  --cm-surface-2: #f3eee5;
+  --cm-ink: #1c1917;
+  --cm-ink-soft: #44403c;
+  --cm-ink-muted: #6b6560;
+  --cm-line: #e7e0d4;
+
+  /* Chart series (validated categorical slots 1 & 2). */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+}
+
+.dark {
+  color-scheme: dark;
+  --cm-canvas: #0e0d0c;
+  --cm-surface: #181715;
+  --cm-surface-2: #22201d;
+  --cm-ink: #f5f2ec;
+  --cm-ink-soft: #d6d1c8;
+  --cm-ink-muted: #a39d93;
+  --cm-line: #2e2b27;
+
+  --series-1: #3987e5;
+  --series-2: #d95926;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-feature-settings: 'ss01', 'cv11';
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--color-emerald-glaze) 30%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-emerald-glaze);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  .dark :focus-visible {
+    outline-color: #5eead4;
+  }
+}
+
+@layer components {
+  .skip-link {
+    position: fixed;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    border-radius: 9999px;
+    background: var(--color-emerald-glaze);
+    color: white;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    transition: top 0.2s ease;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .card {
+    @apply rounded-3xl border border-line bg-surface shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.12)];
+  }
+
+  .eyebrow {
+    @apply text-xs font-semibold tracking-[0.18em] text-ink-muted uppercase;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition duration-200 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply bg-ink text-canvas hover:-translate-y-0.5 hover:shadow-lg;
+  }
+  .btn-ghost {
+    @apply border border-line bg-surface text-ink hover:bg-surface-2;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-ink-soft transition;
+  }
+  .chip[aria-pressed='true'] {
+    @apply border-ink bg-ink text-canvas;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-line bg-surface px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:border-emerald-glaze focus:ring-2 focus:ring-emerald-glaze/20 focus:outline-none;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink-soft;
+  }
+
+  .nav-link {
+    @apply rounded-full px-3.5 py-2 text-sm font-medium text-ink-soft transition hover:bg-surface-2 hover:text-ink;
+  }
+  .nav-link[aria-current='page'] {
+    @apply bg-ink text-canvas hover:bg-ink hover:text-canvas;
+  }
+
+  .prose-cm p {
+    @apply leading-relaxed text-ink-soft;
+  }
+  .prose-cm p + p {
+    @apply mt-4;
+  }
+
+  /* Rainbow text used for the brand wordmark. */
+  .text-spectrum {
+    background: linear-gradient(90deg, #ce1126, #f59e0b 25%, #0f766e 50%, #2563eb 75%, #9333ea);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.is-liked svg {
+  fill: currentColor;
+}
+
+/* Presentation deck fills the screen in full-screen mode. */
+[data-deck]:fullscreen {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0;
+}
+[data-deck]:fullscreen > div:first-child {
+  flex: 1;
+  aspect-ratio: auto;
+}
