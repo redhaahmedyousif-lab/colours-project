@@ -1,7 +1,7 @@
-import { $, $$, esc, icons } from '../lib/dom.js';
-import { toast, trapFocus } from '../lib/ui.js';
-import { colourMeanings, pillars, projects } from '../data/home.js';
-import { site } from '../data/site.js';
+import { $, $$, esc, icons } from '../lib/dom.js?v=musvnmnp';
+import { toast, trapFocus } from '../lib/ui.js?v=musvnmnp';
+import { colourMeanings, pillars, projects } from '../data/home.js?v=musvnmnp';
+import { site } from '../data/site.js?v=musvnmnp';
 
 export function renderHome(main) {
   main.innerHTML = `

@@ -1,9 +1,9 @@
-import { $, $$, esc, icons, timeAgo } from '../lib/dom.js';
-import { load, save, uid } from '../lib/storage.js';
-import { openModal, toast } from '../lib/ui.js';
-import { pageHero, statement } from '../components/sections.js';
-import { abstractScene, sceneSvg } from '../components/scenes.js';
-import { posts as seedPosts, project, seedComments } from '../data/blog.js';
+import { $, $$, esc, icons, timeAgo } from '../lib/dom.js?v=musvnmnp';
+import { load, save, uid } from '../lib/storage.js?v=musvnmnp';
+import { openModal, toast } from '../lib/ui.js?v=musvnmnp';
+import { pageHero, statement } from '../components/sections.js?v=musvnmnp';
+import { abstractScene, sceneSvg } from '../components/scenes.js?v=musvnmnp';
+import { posts as seedPosts, project, seedComments } from '../data/blog.js?v=musvnmnp';
 
 const KEYS = { posts: 'blog-posts', likes: 'blog-likes', comments: 'blog-comments' };
 const state = { mood: 'All', sort: 'latest' };

@@ -1,5 +1,5 @@
-import { $, $$, esc, icons } from '../lib/dom.js';
-import { routes, site } from '../data/site.js';
+import { $, $$, esc, icons } from '../lib/dom.js?v=musvnmnp';
+import { routes, site } from '../data/site.js?v=musvnmnp';
 
 const isDark = () => document.documentElement.classList.contains('dark');
 

@@ -1,8 +1,8 @@
-import { $, $$, esc, icons, timeAgo } from '../lib/dom.js';
-import { load, save, uid } from '../lib/storage.js';
-import { toast } from '../lib/ui.js';
-import { pageHero, statement } from '../components/sections.js';
-import { entries as seedEntries, foods, isSampleData, method, project, reactions, variables } from '../data/taste.js';
+import { $, $$, esc, icons, timeAgo } from '../lib/dom.js?v=musvnmnp';
+import { load, save, uid } from '../lib/storage.js?v=musvnmnp';
+import { toast } from '../lib/ui.js?v=musvnmnp';
+import { pageHero, statement } from '../components/sections.js?v=musvnmnp';
+import { entries as seedEntries, foods, isSampleData, method, project, reactions, variables } from '../data/taste.js?v=musvnmnp';
 
 const STORE_KEY = 'taste-entries';
 const foodById = Object.fromEntries(foods.map((f) => [f.id, f]));
