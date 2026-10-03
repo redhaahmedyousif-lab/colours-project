@@ -53,3 +53,11 @@ src/
   pages/               home, art, taste, blog
 public/favicon.svg
 ```
+
+## Standalone copy for GitHub Pages
+
+`colours-matter-site/` is a no-build copy of the site: `index.html`, `css/style.css` and the JavaScript as readable ES modules. Push that folder as-is to any static host. After you change anything in `src/`, regenerate it with:
+
+```bash
+npm run export
+```
