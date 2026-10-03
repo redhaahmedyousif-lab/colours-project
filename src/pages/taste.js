@@ -43,7 +43,7 @@ export function renderTaste(main) {
       text: 'Do we taste with our eyes? Five everyday foods were recoloured, without changing their recipes, to find out whether colour changes how food tastes.',
       accent: 'from-blue-500/25 via-emerald-400/20 to-transparent',
     })}
-    ${statement({ title: project.title, en: project.en, ar: project.ar })}
+    ${statement({ title: project.title, en: project.en })}
     ${setup()}
     ${foodsSection()}
     <section class="container-page py-20" aria-labelledby="results-title">

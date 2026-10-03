@@ -110,10 +110,8 @@ function renderFeature(main) {
     ${statement({
       eyebrow: 'Featured post',
       title: project.title,
-      enHeading: post.title,
-      arHeading: post.titleAr,
+      heading: post.title,
       en: post.feeling,
-      ar: post.feelingAr,
       footer: `
         <div class="flex items-center gap-1 text-sm">
           <button type="button" data-like="${esc(post.id)}" aria-pressed="${isLiked}" aria-label="${isLiked ? 'Unlike' : 'Like'} ${esc(post.title)}"
@@ -122,7 +120,7 @@ function renderFeature(main) {
           </button>
           <span class="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-ink-muted">${icons.comment}<span class="tabular-nums">${comments}</span></span>
         </div>
-        <button type="button" data-open="${esc(post.id)}" class="btn btn-primary">${icons.comment} Leave a comment · <span lang="ar" class="font-arabic">اترك تعليقاً</span></button>`,
+        <button type="button" data-open="${esc(post.id)}" class="btn btn-primary">${icons.comment} Leave a comment</button>`,
     })}`;
 }
 
@@ -228,11 +226,6 @@ function openPost(id, main) {
             <div class="mt-3 flex flex-wrap gap-1.5">${post.mood.map((m) => `<span class="chip">${esc(m)}</span>`).join('')}</div>
             <h3 class="mt-6 font-sans text-sm font-semibold tracking-wide text-ink-muted uppercase">How it makes me feel</h3>
             <p class="mt-2 font-display text-xl leading-snug">${esc(post.feeling)}</p>
-            ${post.feelingAr ? `
-            <div lang="ar" dir="rtl" class="mt-6 rounded-2xl bg-surface-2 p-5 font-arabic">
-              ${post.titleAr ? `<p class="font-semibold">${esc(post.titleAr)}</p>` : ''}
-              <p class="mt-2 leading-[2.1] text-ink-soft">${esc(post.feelingAr)}</p>
-            </div>` : ''}
             <h3 class="mt-6 font-sans text-sm font-semibold tracking-wide text-ink-muted uppercase">About the place</h3>
             <p class="mt-2 leading-relaxed text-ink-soft">${esc(post.description)}</p>
             <div class="mt-4 flex flex-wrap items-center gap-3 text-xs text-ink-muted">

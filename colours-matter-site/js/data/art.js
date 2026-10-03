@@ -1,8 +1,7 @@
-/** Project 1 statement (final bilingual text). */
+/** Project 1 statement. */
 export const project = {
   title: "Bahraini Art: A'ali Pottery",
   en: "When researching indigenous art, I discovered how patterns and earthy tones tell stories about the land. I chose to draw a traditional A'ali pottery jar as a profound symbol of Bahraini heritage and ancient craftsmanship. I used deep brown and warm orange because they remind me of the fertile earth, representing resilience, and making me feel a deep sense of calm and rootedness. Compared to other indigenous arts that use bright dots to map territories, Bahraini pottery uses natural kiln textures to reflect the harmony between human hands and nature.",
-  ar: "عندما تعمّقت في دراسة الفنون التقليدية، اختلف منظورِي لرؤية كيف تسرد الأنماط والخطوط والألوان الترابية حكايات الأرض وتاريخها العريق. لقد اخترت أن أجسد رسماً لـ 'جرة فخارية من قرية عالي'؛ لأنها تمثل الرمز الأبرز والأكثر أصالة للحرف اليدوية في مملكة البحرين، مجسّدةً عبق الماضي وتراث الأجداد. لقد تعمّدت استخدام درجات اللون البني الترابي والبرتقالي الدافئ؛ لأنها تذكّرني بالأرض الخصبة، وتمنح النفس شعوراً عميقاً بالهدوء والاستقرار والسكينة. وعندما أجريت مقارنة بين هذا الفن الأصيل والفنون الأصلية الأخرى (مثل فنون السكان الأصليين التي تعتمد على النقاط الملونة لتخطيط الأراضي)، وجدنا أن الفخار البحريني يعتمد على ملمس الفرن الطبيعي وحرارة النيران ليترجم التناغم البديع بين أيدي الإنسان البحريني العريق وبيئته الطبيعية.",
 };
 
 export const glazes = [

@@ -6,11 +6,10 @@
  */
 export const isSampleData = true;
 
-/** Project 2 statement (final bilingual text). */
+/** Project 2 statement. */
 export const project = {
   title: "Colour & Taste Experiment",
   en: "We conducted an interactive sensory experiment to investigate if colour changes taste perception. We altered the colours of five foods, such as blue rice and green milk, and recorded people's reactions. The most surprising result was the blue rice; my brother stated it looked like paint and initially hesitated to taste it! Meanwhile, orange-tinted pancakes were perceived as sweeter than normal ones. This proves that the human brain relies heavily on visual colour cues before taste buds even process the chemical reality.",
-  ar: "قمنا بتنفيذ تجربة حسية وعلمية تفاعلية دقيقة لاختبار ما إذا كان للبصر سلطان على حاسة التذوق. تمثلت المنهجية في تغيير ألوان خمسة أطعمة ومشروبات مختلفة باستخدام ملونات معتمدة (مثل الأرز الأزرق والحليب الأخضر)، ثم طلبنا من أفراد العائلة والأصدقاء تذوقها وتسجيل ردود أفعالهم الفورية. كانت النتيجة الأكثر إثارة للدهشة هي 'الأرز الأزرق'؛ حيث أكد أخي بتعجب أنه يبدو وكأنه طلاء، وتردد كثيراً قبل أن يقدم على تذوقه رغم تطابق مكوناته! وفي المقابل، وُجِدت الفطائر الملونة بالبرتقال أكثر حلاوة في الإدراك البصري مقارنة بالفطائر العادية. تؤكد هذه التجربة علمياً أن الدماغ البشري يعتمد بشكل رئيسي ومبكر على الإشارات البصرية للألوان قبل أن تبدأ براعم التذوق في معالجة الحقيقة الكيميائية للطعام.",
 };
 
 export const foods = [

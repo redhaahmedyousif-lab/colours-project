@@ -10,7 +10,6 @@
 @theme {
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Fraunces', ui-serif, Georgia, serif;
-  --font-arabic: 'Noto Naskh Arabic', 'Geeza Pro', 'Traditional Arabic', Tahoma, serif;
 
   --color-canvas: var(--cm-canvas);
   --color-surface: var(--cm-surface);
@@ -94,11 +93,6 @@
     transition:
       background-color 0.3s ease,
       color 0.3s ease;
-  }
-  .font-arabic,
-  .font-arabic h3 {
-    font-family: var(--font-arabic);
-    letter-spacing: 0;
   }
   h1,
   h2,
@@ -223,4 +217,33 @@
 [data-deck]:fullscreen > div:first-child {
   flex: 1;
   aspect-ratio: auto;
+}
+
+/* Preview notice */
+.notice-stripes {
+  background: repeating-linear-gradient(-45deg, #fbbf24 0 18px, #f59e0b 18px 36px);
+  background-size: 51px 51px;
+  animation: notice-slide 1.2s linear infinite;
+}
+@keyframes notice-slide {
+  to {
+    background-position: 51px 0;
+  }
+}
+.notice-shake {
+  animation: notice-shake 0.45s ease;
+}
+@keyframes notice-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-10px);
+  }
+  40%,
+  80% {
+    transform: translateX(10px);
+  }
 }

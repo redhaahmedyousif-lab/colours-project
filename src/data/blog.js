@@ -4,7 +4,7 @@
  * Each post uses an illustrated `scene`. To use your own photograph instead,
  * put the file in /public/photos and add e.g. `image: './photos/souq.jpg'`.
  */
-/** Project 3 feature post (final bilingual text). */
+/** Project 3 feature post. */
 export const project = {
   title: "Colour Blog: Bab Al Bahrain at Night",
   postId: 'bab-al-bahrain-night',
@@ -14,7 +14,6 @@ export const posts = [
   {
     id: 'bab-al-bahrain-night',
     title: "The Grandeur of Bab Al Bahrain at Night",
-    titleAr: "شموخ باب البحرين ليلاً",
     location: 'Bab Al Bahrain, Manama',
     scene: 'gateNight',
     image: './photos/bab-al-bahrain-night.jpg',
@@ -24,7 +23,6 @@ export const posts = [
     colours: ['#0b1026', '#f8fafc', '#ce1126', '#fbbf24'],
     mood: ['Proud', 'Tranquil'],
     feeling: "I captured this exceptional photograph of the historical Bab Al Bahrain glowing with bright white lights under the night sky, topped by our majestic national flag. The visual contrast between the dark night and the brilliant illumination over traditional architecture evokes deep feelings of pride and tranquility. These warm lights remind us of the enduring spirit of our capital, reflecting the rich visual identity of our Bahraini community. What do you think of our city's heritage illumination at night? Leave a comment below!",
-    feelingAr: "لقد وقع اختياري على التقاط هذه الصورة الاستثنائية لمعالم باب البحرين التاريخي وهو يتألق بإضاءاته البيضاء الساطعة تحت جنح الليل، ويعلوه علم الوطن بشامخه الأحمر والأبيض. إن التباين البصري بين عتمة الليل وسطوع الإنارة الباهرة على العمارة التقليدية يمنح النفس شعوراً عميقاً بالفخر والاعتزاز والسكينة. تذكرنا هذه الإضاءات الدافئة بروح الأصالة المتجددة في قلب العاصمة، وتجسد الهوية البصرية العريقة لمجتمعنا البحريني المترابط. ما رأيك في جمال الإضاءة التراثية لمدينتنا ليلاً؟ شاركنا برأيك واترك تعليقاً في الأسفل!",
     description:
       'Bab Al Bahrain is the historic gateway at the entrance to Manama Souq. At night, bright white lights wash over its traditional architecture beneath the national flag.',
     author: 'Class blog',

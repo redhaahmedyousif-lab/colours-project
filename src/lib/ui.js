@@ -69,7 +69,7 @@ export function openModal({ title, render, wide = false }) {
   return close;
 }
 
-function trapFocus(e, root) {
+export function trapFocus(e, root) {
   const focusable = [
     ...root.querySelectorAll('a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])'),
   ].filter((el) => el.offsetParent !== null);

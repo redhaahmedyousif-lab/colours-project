@@ -1,10 +1,11 @@
 import { $, $$, esc, icons } from '../lib/dom.js';
-import { openModal } from '../lib/ui.js';
+import { toast, trapFocus } from '../lib/ui.js';
 import { colourMeanings, pillars, projects } from '../data/home.js';
 import { site } from '../data/site.js';
 
 export function renderHome(main) {
   main.innerHTML = `
+    ${previewBanner()}
     ${hero()}
     ${overview()}
     ${explorer()}
@@ -19,7 +20,7 @@ export function renderHome(main) {
     $('#overview', main).scrollIntoView({ behavior: 'smooth' }),
   );
   wireExplorer(main);
-  showNotice();
+  return showNotice();
 }
 
 function hero() {
@@ -251,24 +252,131 @@ function quote() {
 export const NOTICE =
   'Notice: This is a preliminary version of the website, and further updates will be made during this week. We kindly request your valuable feedback and notes to improve and refine it.';
 
-/** Preview notice: opens once per visit when the home page first loads. */
+const FEEDBACK_LINK = '#/blog?post=bab-al-bahrain-night';
+const READ_SECONDS = 6;
+
+/** Slim reminder bar at the top of the home page. */
+function previewBanner() {
+  return `
+  <div class="notice-stripes text-stone-900">
+    <div class="container-page flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-2.5 text-sm font-semibold">
+      <p class="flex items-center gap-2">${warningIcon('size-5')} Preliminary version: updates are coming this week.</p>
+      <a href="${FEEDBACK_LINK}" class="underline decoration-2 underline-offset-2 hover:no-underline">Leave your feedback</a>
+    </div>
+  </div>`;
+}
+
+function warningIcon(size = 'size-6') {
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="${size} shrink-0" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>`;
+}
+
+/**
+ * Required-reading notice. It covers the page when the home page first
+ * loads and cannot be dismissed until the visitor ticks "I have read it",
+ * waits for the short reading timer, and confirms they really read it.
+ * Shown once per page load. Returns a cleanup function for the router.
+ */
 let noticeShown = false;
 function showNotice() {
-  if (noticeShown) return;
+  if (noticeShown) return undefined;
   noticeShown = true;
-  const close = openModal({
-    title: 'Preview version',
-    render: (body) => {
-      body.innerHTML = `
-        <div class="flex gap-4">
-          <span class="grid size-11 shrink-0 place-items-center rounded-2xl bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-200">${icons.info}</span>
-          <p class="text-base leading-relaxed text-ink" data-notice-text>${esc(NOTICE)}</p>
+
+  const root = document.createElement('div');
+  root.className = 'fixed inset-0 z-[70] flex items-center justify-center bg-black/80 p-4 backdrop-blur-md';
+  root.innerHTML = `
+    <div data-panel role="alertdialog" aria-modal="true" aria-labelledby="notice-title" aria-describedby="notice-body"
+      class="w-full max-w-lg overflow-hidden rounded-3xl bg-surface shadow-[0_30px_80px_-20px_rgb(0_0_0/0.7)] ring-4 ring-amber-400 animate-fade-up">
+      <div class="notice-stripes h-3" aria-hidden="true"></div>
+      <div data-step class="p-6 sm:p-8"></div>
+    </div>`;
+  document.body.appendChild(root);
+  document.body.style.overflow = 'hidden';
+  const panel = root.querySelector('[data-panel]');
+  const stepEl = root.querySelector('[data-step]');
+  let timer = null;
+
+  const shake = () => {
+    panel.classList.remove('notice-shake');
+    void panel.offsetWidth;
+    panel.classList.add('notice-shake');
+  };
+
+  function stepRead(seconds = READ_SECONDS) {
+    stepEl.innerHTML = `
+      <div class="flex items-center gap-3 text-amber-600 dark:text-amber-400">
+        <span class="grid size-14 place-items-center rounded-2xl bg-amber-100 dark:bg-amber-500/15 animate-pulse">${warningIcon('size-8')}</span>
+        <div>
+          <p class="text-xs font-bold tracking-[0.2em] uppercase">Important · Please read</p>
+          <h2 id="notice-title" class="text-2xl font-semibold text-ink sm:text-3xl">Before you continue</h2>
         </div>
-        <div class="mt-7 flex flex-wrap justify-end gap-3">
-          <a href="#/blog?post=bab-al-bahrain-night" class="btn btn-ghost" data-notice-feedback>${icons.comment} Leave feedback</a>
-          <button type="button" class="btn btn-primary" data-notice-ok>Continue to the site</button>
-        </div>`;
-      body.querySelector('[data-notice-ok]').addEventListener('click', () => close());
-    },
+      </div>
+      <div id="notice-body" class="mt-6 rounded-2xl border-2 border-amber-400 bg-amber-50 p-5 dark:bg-amber-500/10">
+        <p data-notice-text class="text-lg leading-relaxed font-medium text-ink">${esc(NOTICE)}</p>
+      </div>
+      <label class="mt-6 flex cursor-pointer items-start gap-3 rounded-xl p-2 transition hover:bg-surface-2">
+        <input id="notice-ack" type="checkbox" class="mt-0.5 size-5 shrink-0 cursor-pointer accent-amber-500" />
+        <span class="text-sm font-medium text-ink">I have read and understood this notice.</span>
+      </label>
+      <button type="button" data-next class="btn mt-5 w-full bg-amber-500 py-3.5 text-base text-stone-900 hover:bg-amber-400" disabled></button>`;
+    const ack = stepEl.querySelector('#notice-ack');
+    const next = stepEl.querySelector('[data-next]');
+    let left = seconds;
+    const update = () => {
+      next.disabled = left > 0 || !ack.checked;
+      next.textContent = left > 0 ? `Please read the notice (${left})` : ack.checked ? 'Continue' : 'Tick the box to continue';
+    };
+    clearInterval(timer);
+    timer = setInterval(() => {
+      left -= 1;
+      if (left <= 0) clearInterval(timer);
+      update();
+    }, 1000);
+    ack.addEventListener('change', update);
+    next.addEventListener('click', stepConfirm);
+    update();
+    ack.focus();
+  }
+
+  function stepConfirm() {
+    stepEl.innerHTML = `
+      <div class="text-center">
+        <span class="mx-auto grid size-16 place-items-center rounded-full bg-amber-100 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400">${warningIcon('size-9')}</span>
+        <h2 id="notice-title" class="mt-5 text-2xl font-semibold sm:text-3xl">Are you sure you read the notice?</h2>
+        <p id="notice-body" class="mx-auto mt-3 max-w-sm leading-relaxed text-ink-soft">
+          This is a <strong class="text-ink">preliminary version</strong>. It will be updated <strong class="text-ink">this week</strong>, and your feedback is needed to improve it.
+        </p>
+        <div class="mt-7 grid gap-3 sm:grid-cols-2">
+          <button type="button" data-again class="btn btn-ghost py-3">No, show it again</button>
+          <button type="button" data-yes class="btn bg-amber-500 py-3 text-stone-900 hover:bg-amber-400">Yes, I have read it</button>
+        </div>
+      </div>`;
+    stepEl.querySelector('[data-again]').addEventListener('click', () => stepRead(3));
+    stepEl.querySelector('[data-yes]').addEventListener('click', () => {
+      close();
+      toast('Thank you! Please leave your feedback on the blog.');
+    });
+    stepEl.querySelector('[data-yes]').focus();
+  }
+
+  const onKey = (e) => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      shake();
+    }
+    if (e.key === 'Tab') trapFocus(e, root);
+  };
+  root.addEventListener('mousedown', (e) => {
+    if (e.target === root) shake();
   });
+  document.addEventListener('keydown', onKey);
+
+  function close() {
+    clearInterval(timer);
+    document.removeEventListener('keydown', onKey);
+    root.remove();
+    document.body.style.overflow = '';
+  }
+
+  stepRead();
+  return close;
 }
