@@ -1,17 +1,17 @@
-import { $, observeReveals } from './lib/dom.js?v=muu34gd2';
-import { closeActiveModal } from './lib/ui.js?v=muu34gd2';
-import { renderFooter, renderHeader, setActiveNav } from './components/layout.js?v=muu34gd2';
-import { startJourney } from './components/journey.js?v=muu34gd2';
-import { routes, site } from './data/site.js?v=muu34gd2';
-import { startEasterEggs } from './lib/eggs.js?v=muu34gd2';
-import { backend, diagnose } from './lib/backend.js?v=muu34gd2';
+import { $, observeReveals } from './lib/dom.js?v=muu366i1';
+import { closeActiveModal } from './lib/ui.js?v=muu366i1';
+import { renderFooter, renderHeader, setActiveNav } from './components/layout.js?v=muu366i1';
+import { startJourney } from './components/journey.js?v=muu366i1';
+import { routes, site } from './data/site.js?v=muu366i1';
+import { startEasterEggs } from './lib/eggs.js?v=muu366i1';
+import { backend, diagnose } from './lib/backend.js?v=muu366i1';
 
 // Each page is its own module, fetched the first time it is visited.
 const pages = {
-  '/': () => import('./pages/home.js?v=muu34gd2').then((m) => m.renderHome),
-  '/art': () => import('./pages/art.js?v=muu34gd2').then((m) => m.renderArt),
-  '/taste': () => import('./pages/taste.js?v=muu34gd2').then((m) => m.renderTaste),
-  '/blog': () => import('./pages/blog.js?v=muu34gd2').then((m) => m.renderBlog),
+  '/': () => import('./pages/home.js?v=muu366i1').then((m) => m.renderHome),
+  '/art': () => import('./pages/art.js?v=muu366i1').then((m) => m.renderArt),
+  '/taste': () => import('./pages/taste.js?v=muu366i1').then((m) => m.renderTaste),
+  '/blog': () => import('./pages/blog.js?v=muu366i1').then((m) => m.renderBlog),
 };
 
 let cleanup = null;
