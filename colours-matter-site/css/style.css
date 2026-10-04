@@ -4017,6 +4017,16 @@ html.no-colour {
   padding: .05rem .45rem;
 }
 
+.pending-chip {
+  color: var(--cm-ink-soft);
+  background: oklab(76.8591% .0560995 .154808 / .18);
+  border-radius: 9999px;
+  padding: .05rem .5rem;
+  font-size: 10px;
+  font-weight: 600;
+  display: inline-block;
+}
+
 @property --tw-translate-x {
   syntax: "*";
   inherits: false;

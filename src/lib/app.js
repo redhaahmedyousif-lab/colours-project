@@ -10,6 +10,13 @@ import { createStore } from './store.js';
 import { backend } from './backend.js';
 import { load, save } from './storage.js';
 import { family } from './palette.js';
+import { toast } from './ui.js';
+
+const OFFLINE_NOTE = 'You’re offline. Saved on this device. It will be shared automatically when you’re back online.';
+const noteIfPending = (item) => {
+  if (item?.pending) toast(OFFLINE_NOTE);
+  return item;
+};
 
 export const store = createStore({
   mode: backend.mode,
@@ -47,7 +54,8 @@ export const actions = {
     };
     store.set({ likes: optimistic });
     try {
-      const { liked, count } = await backend.toggleLike(postId);
+      const { liked, count, pending } = await backend.toggleLike(postId, { wasLiked, count: likes.counts[postId] ?? 0 });
+      if (pending) toast(OFFLINE_NOTE);
       const current = store.get().likes;
       store.set({
         likes: {
@@ -75,7 +83,7 @@ export const actions = {
   },
 
   async addComment(postId, input) {
-    const comment = await backend.addComment(postId, input);
+    const comment = noteIfPending(await backend.addComment(postId, input));
     store.set((s) => ({
       comments: { ...s.comments, [postId]: [...(s.comments[postId] ?? []), comment] },
       commentCounts: { ...s.commentCounts, [postId]: (s.commentCounts[postId] ?? 0) + 1 },
@@ -100,7 +108,7 @@ export const actions = {
   },
 
   async addPlace(place, photo) {
-    const post = await backend.addPlace(place, photo);
+    const post = noteIfPending(await backend.addPlace(place, photo));
     store.set((s) => ({ places: [post, ...s.places] }));
     return post;
   },
@@ -119,7 +127,7 @@ export const actions = {
   },
 
   async addTaste(entry) {
-    const saved = await backend.addTaste(entry);
+    const saved = noteIfPending(await backend.addTaste(entry));
     store.set((s) => ({ taste: [...s.taste, saved] }));
     return saved;
   },
@@ -147,3 +155,15 @@ export function favouriteFamily() {
   const entries = Object.entries(store.get().seen).sort((a, b) => b[1] - a[1]);
   return entries.length && entries[0][1] >= 1 ? entries[0][0] : null;
 }
+
+/** After queued offline items reach the server, reload shared data. */
+backend.onSync?.((sent) => {
+  likesPromise = placesPromise = tastePromise = countsPromise = null;
+  const { comments } = store.get();
+  actions.loadLikes();
+  actions.loadCommentCounts();
+  if (store.get().placesReady) actions.loadPlaces();
+  if (store.get().tasteReady) actions.loadTaste();
+  Object.keys(comments).forEach((id) => actions.loadComments(id));
+  toast(sent === 1 ? 'Back online. Your saved item has been shared.' : `Back online. ${sent} saved items have been shared.`);
+});

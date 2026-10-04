@@ -41,7 +41,7 @@ All the content lives in `src/data/`, separate from the code:
 Likes, comments, shared places and taste results go through one data layer (`src/lib/backend.js`) with two implementations:
 
 - **Local mode (default):** everything is saved in the visitor's own browser.
-- **Supabase mode:** shared by every visitor. Turned on by filling in `src/data/config.js`.
+- **Supabase mode (active):** shared by every visitor. Configured in `src/data/config.js`.
 
 To set up Supabase:
 
@@ -55,6 +55,10 @@ What the schema enforces:
 - Row-level security on every table. Visitors can read public columns only; hidden columns (IP hash, client id) are not readable.
 - No direct inserts. All writes go through `SECURITY DEFINER` functions that strip HTML and control characters, validate lengths, colours, foods and moods, and apply rate limits (3 comments per minute and 20 per hour, 3 places per hour, 12 taste results per 10 minutes, 30 likes per minute), keyed on a hash of the visitor's IP.
 - Photos: a public `places` bucket that accepts only JPEG files up to 2 MB with a random UUID name, with a global limit of 10 uploads per minute.
+
+**Keys:** `src/data/config.js` holds only the project URL and the publishable key, which are public by design. The secret key (`sb_secret_…`, service role) bypasses every security rule. Never put it in this repository or any front-end code. Keep it in the Supabase dashboard or a private server. `.env` files are git-ignored.
+
+**Offline safety net:** if Supabase can't be reached, the site shows the last data it loaded from the server. New comments, places, taste results and likes are kept in an outbox on the device, marked "Waiting to send", and sent automatically when the connection returns.
 
 On the client, photos are checked by their real file signature, size and dimensions, then re-encoded through a canvas, which strips EXIF data such as GPS location.
 

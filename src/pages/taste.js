@@ -354,10 +354,10 @@ function wireTrial(main) {
     const submit = $('button[type=submit]', form);
     submit.disabled = true;
     try {
-      await actions.addTaste(entry);
+      const added = await actions.addTaste(entry);
       form.tester.value = '';
       form.comment.value = '';
-      toast(`Added ${entry.tester}’s ${blind ? 'blind' : 'visual'} result`);
+      if (!added.pending) toast(`Added ${entry.tester}’s ${blind ? 'blind' : 'visual'} result`);
     } catch (err) {
       fail(err.message);
     } finally {
@@ -573,7 +573,7 @@ function renderLog(main) {
         <td class="py-3.5 pr-3"><span class="flex items-center gap-2 font-medium"><span class="size-3 shrink-0 rounded-full" style="background:${blind ? 'var(--cm-ink-muted)' : f.changed}"></span>${esc(f.name)}</span></td>
         <td class="py-3.5 pr-3">
           <span class="font-medium">${esc(e.tester)}</span>
-          ${e.sample ? '<span class="ml-1 rounded bg-surface-2 px-1.5 py-0.5 text-[10px] text-ink-muted">example</span>' : `<span class="block text-[11px] text-ink-muted">${timeAgo(e.createdAt)}</span>`}
+          ${e.sample ? '<span class="ml-1 rounded bg-surface-2 px-1.5 py-0.5 text-[10px] text-ink-muted">example</span>' : e.pending ? '<span class="pending-chip mt-1">Waiting to send</span>' : `<span class="block text-[11px] text-ink-muted">${timeAgo(e.createdAt)}</span>`}
         </td>
         <td class="py-3.5 pr-3"><span class="chip !py-0.5 ${blind ? '' : '!border-transparent !bg-surface-2'}">${modeLabel[e.mode ?? 'visual']}</span></td>
         <td class="py-3.5 pr-3 whitespace-nowrap">${stars(e.look)}</td>
@@ -583,7 +583,7 @@ function renderLog(main) {
           <div class="flex items-start gap-2">
             <span class="text-lg leading-none" aria-hidden="true">${esc(e.reaction)}</span>
             <span class="flex-1 text-ink-soft">${e.comment ? `“${esc(e.comment)}”` : '<span class="text-ink-muted">—</span>'}</span>
-            ${!e.sample && e.own && canDelete ? `<button type="button" class="rounded-md p-1 text-ink-muted transition hover:bg-surface-2 hover:text-red-600" data-delete="${esc(e.id)}" aria-label="Delete entry by ${esc(e.tester)}">${icons.trash}</button>` : ''}
+            ${!e.sample && e.own && (canDelete || e.pending) ? `<button type="button" class="rounded-md p-1 text-ink-muted transition hover:bg-surface-2 hover:text-red-600" data-delete="${esc(e.id)}" aria-label="Delete entry by ${esc(e.tester)}">${icons.trash}</button>` : ''}
           </div>
         </td>
       </tr>`;

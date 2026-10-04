@@ -4,3 +4,6 @@ dist
 *.log
 colours-matter-site.zip
 colours-matter-code.zip
+.env
+.env.*
+*.secret

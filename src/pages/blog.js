@@ -241,7 +241,7 @@ function card(post, featured = false) {
       <span class="palette-strip absolute inset-x-0 bottom-0 flex">${post.colours
         .map((c) => `<span class="flex-1" style="background:${c}"><span class="palette-strip-hex">${c.toUpperCase()}</span></span>`)
         .join('')}</span>
-      ${post.userPost ? '<span class="absolute top-3 left-3 rounded-full bg-black/45 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">Community</span>' : ''}
+      ${post.userPost ? `<span class="absolute top-3 left-3 rounded-full bg-black/45 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">${post.pending ? 'Waiting to send' : 'Community'}</span>` : ''}
       ${featured ? '<span class="absolute top-3 left-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-stone-900 shadow">★ Featured place</span>' : ''}
     </button>
     <div class="flex flex-1 flex-col p-6 ${featured ? 'md:p-8' : ''}">
@@ -300,7 +300,7 @@ function openPost(id, main) {
             <p class="mt-2 leading-relaxed text-ink-soft">${esc(post.description)}</p>
             <div class="mt-4 flex flex-wrap items-center gap-3 text-xs text-ink-muted">
               <span>Posted by ${esc(post.author)}</span>
-              ${post.userPost && post.own && store.get().mode === 'local' ? `<button type="button" data-delete-post class="inline-flex items-center gap-1 rounded-full border border-line px-2.5 py-1 hover:border-red-400 hover:text-red-600">${icons.trash} <span>Delete post</span></button>` : ''}
+              ${post.userPost && post.own && (store.get().mode === 'local' || post.pending) ? `<button type="button" data-delete-post class="inline-flex items-center gap-1 rounded-full border border-line px-2.5 py-1 hover:border-red-400 hover:text-red-600">${icons.trash} <span>Delete post</span></button>` : ''}
             </div>
           </div>
           <div>
@@ -369,6 +369,7 @@ function wireComments(body, post) {
   const error = $('[data-comment-error]', body);
   const chars = $('[data-chars]', body);
   const canDelete = (c) => c.own && !c.remote;
+  // (pending offline comments can be deleted before they are sent)
   form.name.value = load('commenter', '');
 
   const render = () => {
@@ -384,7 +385,7 @@ function wireComments(body, post) {
             <div class="flex flex-wrap items-baseline justify-between gap-2">
               <p class="text-sm font-semibold">${esc(c.name)}</p>
               <div class="flex items-center gap-2 text-xs text-ink-muted">
-                <time datetime="${new Date(c.createdAt).toISOString()}">${timeAgo(c.createdAt)}</time>
+                ${c.pending ? '<span class="pending-chip">Waiting to send</span>' : `<time datetime="${new Date(c.createdAt).toISOString()}">${timeAgo(c.createdAt)}</time>`}
                 ${canDelete(c) ? `<button type="button" data-delete-comment="${esc(c.id)}" class="rounded p-0.5 hover:text-red-600" aria-label="Delete your comment">${icons.trash}</button>` : ''}
               </div>
             </div>
@@ -416,11 +417,11 @@ function wireComments(body, post) {
     const submit = $('button[type=submit]', form);
     submit.disabled = true;
     try {
-      await actions.addComment(post.id, { name, text });
+      const added = await actions.addComment(post.id, { name, text });
       save('commenter', name);
       form.text.value = '';
       chars.textContent = '0';
-      toast('Thanks for your comment!');
+      if (!added.pending) toast('Thanks for your comment!');
     } catch (err) {
       fail(err.message, form.text);
     } finally {
@@ -629,12 +630,12 @@ function openShare(main, preset = null) {
         submit.disabled = true;
         submit.textContent = 'Publishing…';
         try {
-          await actions.addPlace(place, photo);
+          const added = await actions.addPlace(place, photo);
           close();
           view.mood = 'All';
           view.sort = 'latest';
           $('[data-sort]', main).value = 'latest';
-          toast('Your place is live on the blog!');
+          if (!added?.pending) toast('Your place is live on the blog!');
         } catch (err) {
           showError(err.message);
           submit.disabled = false;

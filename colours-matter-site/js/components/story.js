@@ -4,10 +4,10 @@
  * Heritage (kiln texture, stamped dots, the rim). Scroll position is mapped
  * to three CSS variables; the browser does the drawing.
  */
-import { $, $$ } from '../lib/dom.js?v=muu1oee4';
-import { actions } from '../lib/app.js?v=muu1oee4';
-import { reducedMotion } from '../lib/motion.js?v=muu1oee4';
-import { JAR_SHAPE } from './jar.js?v=muu1oee4';
+import { $, $$ } from '../lib/dom.js?v=muu24ax7';
+import { actions } from '../lib/app.js?v=muu24ax7';
+import { reducedMotion } from '../lib/motion.js?v=muu24ax7';
+import { JAR_SHAPE } from './jar.js?v=muu24ax7';
 
 const steps = [
   {
