@@ -1,21 +1,22 @@
-import { $, observeReveals } from './lib/dom.js?v=musvnmnp';
-import { closeActiveModal } from './lib/ui.js?v=musvnmnp';
-import { renderFooter, renderHeader, setActiveNav } from './components/layout.js?v=musvnmnp';
-import { routes, site } from './data/site.js?v=musvnmnp';
-import { renderHome } from './pages/home.js?v=musvnmnp';
-import { renderArt } from './pages/art.js?v=musvnmnp';
-import { renderTaste } from './pages/taste.js?v=musvnmnp';
-import { renderBlog } from './pages/blog.js?v=musvnmnp';
+import { $, observeReveals } from './lib/dom.js?v=muu1oee4';
+import { closeActiveModal } from './lib/ui.js?v=muu1oee4';
+import { renderFooter, renderHeader, setActiveNav } from './components/layout.js?v=muu1oee4';
+import { startJourney } from './components/journey.js?v=muu1oee4';
+import { routes, site } from './data/site.js?v=muu1oee4';
+import { startEasterEggs } from './lib/eggs.js?v=muu1oee4';
 
+// Each page is its own module, fetched the first time it is visited.
 const pages = {
-  '/': renderHome,
-  '/art': renderArt,
-  '/taste': renderTaste,
-  '/blog': renderBlog,
+  '/': () => import('./pages/home.js?v=muu1oee4').then((m) => m.renderHome),
+  '/art': () => import('./pages/art.js?v=muu1oee4').then((m) => m.renderArt),
+  '/taste': () => import('./pages/taste.js?v=muu1oee4').then((m) => m.renderTaste),
+  '/blog': () => import('./pages/blog.js?v=muu1oee4').then((m) => m.renderBlog),
 };
 
 let cleanup = null;
 let firstRender = true;
+let navigation = 0;
+let journey;
 
 function currentPath() {
   const hash = location.hash;
@@ -24,21 +25,26 @@ function currentPath() {
   return pages[path] ? path : '/';
 }
 
-function navigate() {
+async function navigate() {
   const hash = location.hash;
   // Plain in-page anchors (e.g. "#main") are not routes.
   if (hash && !hash.startsWith('#/')) return;
 
   const path = currentPath();
+  const ticket = ++navigation;
+  const render = await pages[path]();
+  if (ticket !== navigation) return; // a newer navigation won
+
   const main = $('#main');
   closeActiveModal();
   if (typeof cleanup === 'function') cleanup();
   main.innerHTML = '';
-  cleanup = pages[path](main);
+  cleanup = render(main);
 
   const route = routes.find((r) => r.path === path);
   document.title = path === '/' ? `${site.title} — ${site.tagline}` : `${route.label} — ${site.title}`;
   setActiveNav(path);
+  journey.setPath(path);
   window.scrollTo({ top: 0, behavior: 'instant' });
   observeReveals(main);
   // Move focus to the new page for keyboard and screen-reader users.
@@ -48,6 +54,8 @@ function navigate() {
 
 renderHeader();
 renderFooter();
+journey = startJourney();
+startEasterEggs();
 
 // Keep the skip link working alongside hash routing.
 document.querySelector('.skip-link').addEventListener('click', (e) => {

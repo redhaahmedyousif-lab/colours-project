@@ -9,7 +9,7 @@
       content="An MYP English project exploring how colour shapes Bahraini culture, taste and everyday places: A'ali pottery, a colour and taste experiment, and a community colour blog."
     />
     <meta name="theme-color" content="#0f766e" />
-    <link rel="stylesheet" href="./css/style.css?v=musvnmnp" />
+    <link rel="stylesheet" href="./css/style.css?v=muu1oee4" />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,6 +18,18 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Preload only the hero image of the page being opened (the blog's featured photo). -->
+    <script>
+      if (location.hash.indexOf('#/blog') === 0) {
+        var l = document.createElement('link');
+        l.rel = 'preload';
+        l.as = 'image';
+        l.href = './photos/bab-al-bahrain-night.jpg';
+        l.setAttribute('fetchpriority', 'high');
+        document.head.appendChild(l);
+      }
+    </script>
 
     <!-- Apply the saved / system theme before first paint to avoid a flash. -->
     <script>
@@ -35,11 +47,11 @@
     <a href="#main" class="skip-link">Skip to content</a>
     <div id="app" class="flex min-h-screen flex-col">
       <header id="site-header"></header>
-      <main id="main" tabindex="-1" class="flex-1 outline-none"></main>
+      <main id="main" tabindex="-1" class="min-h-[100svh] flex-1 outline-none"></main>
       <footer id="site-footer"></footer>
     </div>
     <div id="modal-root"></div>
     <div id="toast-root" aria-live="polite" class="pointer-events-none fixed inset-x-0 bottom-4 z-[60] flex justify-center px-4"></div>
-    <script type="module" src="./js/main.js?v=musvnmnp"></script>
+    <script type="module" src="./js/main.js?v=muu1oee4"></script>
   </body>
 </html>

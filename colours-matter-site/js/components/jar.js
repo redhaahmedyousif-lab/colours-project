@@ -4,11 +4,13 @@
  */
 let count = 0;
 
+export const JAR_SHAPE =
+  'M72 34 C72 50 84 54 82 66 C50 80 34 120 38 160 C42 205 70 240 100 242 C130 240 158 205 162 160 C166 120 150 80 118 66 C116 54 128 50 128 34 Z';
+
 export function jarSvg({ body = '#9a5b34', band = '#0f766e', shade = '#6b3b1f', className = '', label } = {}) {
   const id = `jar-${++count}`;
   const a11y = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
-  const shape =
-    'M72 34 C72 50 84 54 82 66 C50 80 34 120 38 160 C42 205 70 240 100 242 C130 240 158 205 162 160 C166 120 150 80 118 66 C116 54 128 50 128 34 Z';
+  const shape = JAR_SHAPE;
   return `
   <svg viewBox="0 0 200 270" class="${className}" ${a11y}>
     <defs>

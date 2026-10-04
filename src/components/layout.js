@@ -1,5 +1,6 @@
 import { $, $$, esc, icons } from '../lib/dom.js';
 import { routes, site } from '../data/site.js';
+import { journeyMarkup } from './journey.js';
 
 const isDark = () => document.documentElement.classList.contains('dark');
 
@@ -32,7 +33,7 @@ const brand = `
 
 export function renderHeader() {
   const header = $('#site-header');
-  header.className = 'sticky top-[env(safe-area-inset-top,0px)] z-40 border-b border-line/70 bg-canvas/80 backdrop-blur-xl';
+  header.className = 'sticky top-[env(safe-area-inset-top,0px)] z-40 bg-canvas/80 backdrop-blur-xl';
   header.innerHTML = `
     <nav class="container-page flex h-16 items-center justify-between gap-4" aria-label="Main">
       ${brand}
@@ -44,6 +45,7 @@ export function renderHeader() {
         <button type="button" class="btn-ghost btn !p-2 md:hidden" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">${icons.menu}</button>
       </div>
     </nav>
+    ${journeyMarkup()}
     <div id="mobile-menu" class="hidden border-t border-line md:hidden">
       <div class="container-page grid gap-1 py-3">
         ${routes.map((r) => `<a class="nav-link !rounded-xl !py-3" href="#${r.path}" data-nav="${r.path}">${esc(r.label)}</a>`).join('')}

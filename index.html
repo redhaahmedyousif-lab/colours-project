@@ -18,6 +18,18 @@
       rel="stylesheet"
     />
 
+    <!-- Preload only the hero image of the page being opened (the blog's featured photo). -->
+    <script>
+      if (location.hash.indexOf('#/blog') === 0) {
+        var l = document.createElement('link');
+        l.rel = 'preload';
+        l.as = 'image';
+        l.href = './photos/bab-al-bahrain-night.jpg';
+        l.setAttribute('fetchpriority', 'high');
+        document.head.appendChild(l);
+      }
+    </script>
+
     <!-- Apply the saved / system theme before first paint to avoid a flash. -->
     <script>
       (function () {
@@ -34,7 +46,7 @@
     <a href="#main" class="skip-link">Skip to content</a>
     <div id="app" class="flex min-h-screen flex-col">
       <header id="site-header"></header>
-      <main id="main" tabindex="-1" class="flex-1 outline-none"></main>
+      <main id="main" tabindex="-1" class="min-h-[100svh] flex-1 outline-none"></main>
       <footer id="site-footer"></footer>
     </div>
     <div id="modal-root"></div>

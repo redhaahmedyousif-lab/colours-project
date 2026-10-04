@@ -38,7 +38,7 @@ const VERSION = Date.now().toString(36);
 const walk = (dir) =>
   readdirSync(dir, { withFileTypes: true }).flatMap((d) => (d.isDirectory() ? walk(join(dir, d.name)) : [join(dir, d.name)]));
 for (const file of walk(join(OUT, 'js')).filter((f) => f.endsWith('.js'))) {
-  const src = readFileSync(file, 'utf8').replace(/(from\s+'\.{1,2}\/[^']+\.js)'/g, `$1?v=${VERSION}'`);
+  const src = readFileSync(file, 'utf8').replace(/((?:from\s+|import\()'\.{1,2}\/[^']+\.js)'/g, `$1?v=${VERSION}'`);
   writeFileSync(file, src);
 }
 
@@ -54,6 +54,8 @@ writeFileSync(join(OUT, 'index.html'), html);
 // 5. Tell GitHub Pages to serve files as-is (skip Jekyll processing).
 writeFileSync(join(OUT, '.nojekyll'), '');
 cpSync(join('scripts', 'site-readme.md'), join(OUT, 'README.md'));
+mkdirSync(join(OUT, 'supabase'), { recursive: true });
+cpSync(join('supabase', 'schema.sql'), join(OUT, 'supabase', 'schema.sql'));
 
 rmSync(TMP, { recursive: true, force: true });
 console.log(`\n✓ Standalone site written to ${OUT}/`);

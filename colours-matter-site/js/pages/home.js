@@ -1,7 +1,10 @@
-import { $, $$, esc, icons } from '../lib/dom.js?v=musvnmnp';
-import { toast, trapFocus } from '../lib/ui.js?v=musvnmnp';
-import { colourMeanings, pillars, projects } from '../data/home.js?v=musvnmnp';
-import { site } from '../data/site.js?v=musvnmnp';
+import { $, $$, esc, icons } from '../lib/dom.js?v=muu1oee4';
+import { toast, trapFocus } from '../lib/ui.js?v=muu1oee4';
+import { colourMeanings, pillars, projects } from '../data/home.js?v=muu1oee4';
+import { site } from '../data/site.js?v=muu1oee4';
+import { actions } from '../lib/app.js?v=muu1oee4';
+import { animateStats } from '../lib/motion.js?v=muu1oee4';
+import { mountDiscovery } from '../components/discovery.js?v=muu1oee4';
 
 export function renderHome(main) {
   main.innerHTML = `
@@ -9,8 +12,9 @@ export function renderHome(main) {
     ${hero()}
     ${overview()}
     ${explorer()}
-    ${projectCards()}
-    ${quote()}
+    <div class="cv-auto">${projectCards()}</div>
+    <section class="container-page pb-16"><div data-discovery></div></section>
+    <div class="cv-auto">${quote()}</div>
   `;
 
   $('[data-scroll="projects"]', main).addEventListener('click', () =>
@@ -20,7 +24,8 @@ export function renderHome(main) {
     $('#overview', main).scrollIntoView({ behavior: 'smooth' }),
   );
   wireExplorer(main);
-  return showNotice();
+  const stops = [animateStats(main), mountDiscovery($('[data-discovery]', main), '/'), showNotice() ?? (() => {})];
+  return () => stops.forEach((s) => s());
 }
 
 function hero() {
@@ -54,15 +59,15 @@ function hero() {
         </div>
         <dl class="mt-12 grid max-w-md grid-cols-3 gap-6 border-t border-line pt-6">
           ${[
-            ['3', 'Projects'],
-            ['5', 'Foods recoloured'],
-            ['6+', 'Places in Bahrain'],
+            [3, '', 'Projects'],
+            [5, '', 'Foods recoloured'],
+            [8, '+', 'Places in Bahrain'],
           ]
             .map(
-              ([n, l]) => `
+              ([n, suffix, l]) => `
             <div>
               <dt class="sr-only">${l}</dt>
-              <dd class="font-display text-3xl font-semibold">${n}</dd>
+              <dd class="font-display text-3xl font-semibold tabular-nums" data-count-to="${n}" data-suffix="${suffix}">${n}${suffix}</dd>
               <dd class="mt-1 text-xs text-ink-muted">${l}</dd>
             </div>`,
             )
@@ -176,8 +181,9 @@ function colourPanel(c) {
 function wireExplorer(main) {
   const panel = $('#colour-panel', main);
   const tabs = $$('[data-colour]', main);
-  const select = (id, focus = false) => {
+  const select = (id, focus = false, notice = true) => {
     const c = colourMeanings.find((m) => m.id === id);
+    if (notice) actions.notice(c.hex, 1);
     tabs.forEach((t) => {
       const on = t.dataset.colour === id;
       t.setAttribute('aria-selected', String(on));
@@ -196,7 +202,7 @@ function wireExplorer(main) {
       select(tabs[(i + dir + tabs.length) % tabs.length].dataset.colour, true);
     });
   });
-  select(colourMeanings[0].id);
+  select(colourMeanings[0].id, false, false);
 }
 
 function projectCards() {

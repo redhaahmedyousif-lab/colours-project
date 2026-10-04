@@ -17,6 +17,8 @@ export const posts = [
     location: 'Bab Al Bahrain, Manama',
     scene: 'gateNight',
     image: './photos/bab-al-bahrain-night.jpg',
+    width: 1600,
+    height: 1059,
     alt: 'Bab Al Bahrain lit with bright white lights at night, with the national flag flying above the gateway',
     // Shown under the photo. The image carries a "Manama Story" watermark, so credit the source.
     credit: 'Photo: Manama Story',
