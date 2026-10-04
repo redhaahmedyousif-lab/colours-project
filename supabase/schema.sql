@@ -1,8 +1,9 @@
 -- ============================================================================
 -- Colours Matter: Supabase schema
 --
--- Run this whole file once in your Supabase project (SQL Editor → New query →
--- paste → Run). Then put the project URL and anon key in js/data/config.js
+-- Run this whole file in your Supabase project (SQL Editor → New query →
+-- paste → Run). It is safe to run again, and it upgrades the earlier
+-- "likes / comments / shared_places / taste_results" tables automatically. Then put the project URL and anon key in js/data/config.js
 -- (src/data/config.js in the source project).
 --
 -- Security model
@@ -19,6 +20,49 @@
 
 create extension if not exists pgcrypto with schema extensions;
 create schema if not exists private;
+
+-- ---------------------------------------------------------------------------
+-- Upgrade from an earlier, different version of these tables
+-- (columns target_id / author / content, food_id / condition, shared_places).
+-- Empty old tables are removed. Old tables that already contain rows are
+-- renamed to *_old_v0 (nothing is deleted) and lose their public policies.
+-- ---------------------------------------------------------------------------
+do $$
+declare
+  t record;
+  has_rows boolean;
+  stmt text;
+begin
+  for t in
+    select * from (values
+      ('likes', 'target_id'),
+      ('comments', 'target_id'),
+      ('taste_results', 'food_id'),
+      ('shared_places', 'title')
+    ) as v(tbl, marker)
+  loop
+    if exists (
+      select 1 from information_schema.columns
+      where table_schema = 'public' and table_name = t.tbl and column_name = t.marker
+    ) then
+      execute format('select exists (select 1 from public.%I)', t.tbl) into has_rows;
+      if has_rows then
+        execute format('alter table public.%I rename to %I', t.tbl, t.tbl || '_old_v0');
+        execute format('revoke all on public.%I from anon, authenticated', t.tbl || '_old_v0');
+        select coalesce(string_agg(format('drop policy %I on public.%I;', policyname, t.tbl || '_old_v0'), ' '), '')
+          into stmt from pg_policies where schemaname = 'public' and tablename = t.tbl || '_old_v0';
+        if stmt <> '' then
+          execute stmt;
+        end if;
+        raise notice 'Kept existing data: public.% renamed to public.%_old_v0', t.tbl, t.tbl;
+      else
+        execute format('drop table public.%I cascade', t.tbl);
+        raise notice 'Removed empty old table public.%', t.tbl;
+      end if;
+    end if;
+  end loop;
+end
+$$;
 
 -- ---------------------------------------------------------------------------
 -- Tables

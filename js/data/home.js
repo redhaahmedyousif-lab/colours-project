@@ -1,8 +1,8 @@
-import { jarSvg } from '../components/jar.js?v=muu24ax7';
-import { sceneSvg } from '../components/scenes.js?v=muu24ax7';
-import { project as artProject } from './art.js?v=muu24ax7';
-import { project as tasteProject } from './taste.js?v=muu24ax7';
-import { project as blogProject } from './blog.js?v=muu24ax7';
+import { jarSvg } from '../components/jar.js?v=muu2qa3h';
+import { sceneSvg } from '../components/scenes.js?v=muu2qa3h';
+import { project as artProject } from './art.js?v=muu2qa3h';
+import { project as tasteProject } from './taste.js?v=muu2qa3h';
+import { project as blogProject } from './blog.js?v=muu2qa3h';
 
 export const pillars = [
   {

@@ -4,7 +4,7 @@
  * (colour and taste). It fills as you read; hovering or focusing it reveals
  * the three chapters.
  */
-import { $, esc } from '../lib/dom.js?v=muu24ax7';
+import { $, esc } from '../lib/dom.js?v=muu2qa3h';
 
 export const chapters = [
   { id: 'culture', path: '/art', label: 'Culture', project: 'Project 1', colours: ['#9a5b34', '#0f766e'] },
