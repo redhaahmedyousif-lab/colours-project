@@ -1,6 +1,6 @@
-import { $, $$, esc, icons } from '../lib/dom.js?v=muu24ax7';
-import { routes, site } from '../data/site.js?v=muu24ax7';
-import { journeyMarkup } from './journey.js?v=muu24ax7';
+import { $, $$, esc, icons } from '../lib/dom.js?v=muu2qa3h';
+import { routes, site } from '../data/site.js?v=muu2qa3h';
+import { journeyMarkup } from './journey.js?v=muu2qa3h';
 
 const isDark = () => document.documentElement.classList.contains('dark');
 

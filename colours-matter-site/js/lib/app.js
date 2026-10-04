@@ -6,11 +6,11 @@
  *             the store when it finishes (optimistically for likes)
  *   UI      – pages subscribe to the slices they render
  */
-import { createStore } from './store.js?v=muu24ax7';
-import { backend } from './backend.js?v=muu24ax7';
-import { load, save } from './storage.js?v=muu24ax7';
-import { family } from './palette.js?v=muu24ax7';
-import { toast } from './ui.js?v=muu24ax7';
+import { createStore } from './store.js?v=muu2qa3h';
+import { backend } from './backend.js?v=muu2qa3h';
+import { load, save } from './storage.js?v=muu2qa3h';
+import { family } from './palette.js?v=muu2qa3h';
+import { toast } from './ui.js?v=muu2qa3h';
 
 const OFFLINE_NOTE = 'You’re offline. Saved on this device. It will be shared automatically when you’re back online.';
 const noteIfPending = (item) => {

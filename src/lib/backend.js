@@ -126,6 +126,11 @@ async function request(path, { method = 'GET', body, headers = {}, raw = false, 
     clearTimeout(timer);
   }
   if (res.status >= 500) throw new NetworkError();
+  if (res.status === 404) {
+    // The function or table doesn't exist: supabase/schema.sql hasn't been run.
+    schemaMissing();
+    throw new NetworkError();
+  }
   if (!res.ok) {
     const info = await res.json().catch(() => ({}));
     const key = Object.keys(FRIENDLY).find((k) => String(info.message ?? info.error ?? '').includes(k));
@@ -134,6 +139,16 @@ async function request(path, { method = 'GET', body, headers = {}, raw = false, 
     throw err;
   }
   return res.status === 204 ? null : res.json();
+}
+
+let warned = false;
+function schemaMissing() {
+  if (warned) return;
+  warned = true;
+  console.warn(
+    'Colours Matter: Supabase is reachable but the expected tables/functions are missing. ' +
+      'Run supabase/schema.sql in the Supabase SQL Editor. Until then, visitor actions are kept on this device and will sync automatically.',
+  );
 }
 
 const rpc = (fn, args = {}) => request(`/rest/v1/rpc/${fn}`, { method: 'POST', body: args });
