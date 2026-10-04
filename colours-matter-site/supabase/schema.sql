@@ -22,43 +22,54 @@ create extension if not exists pgcrypto with schema extensions;
 create schema if not exists private;
 
 -- ---------------------------------------------------------------------------
--- Upgrade from an earlier, different version of these tables
--- (columns target_id / author / content, food_id / condition, shared_places).
--- Empty old tables are removed. Old tables that already contain rows are
--- renamed to *_old_v0 (nothing is deleted) and lose their public policies.
+-- Upgrade from earlier or different versions of these tables.
+-- Any existing table that is missing a column this site needs is moved out
+-- of the way: if it is empty it is removed; if it has rows it is renamed
+-- (e.g. places_old_20261005120000), nothing is deleted, and visitors lose
+-- all access to it.
 -- ---------------------------------------------------------------------------
 do $$
 declare
   t record;
   has_rows boolean;
+  missing boolean;
+  backup text;
   stmt text;
 begin
   for t in
     select * from (values
-      ('likes', 'target_id'),
-      ('comments', 'target_id'),
-      ('taste_results', 'food_id'),
-      ('shared_places', 'title')
-    ) as v(tbl, marker)
+      ('comments', array['post_id', 'name', 'body', 'client_id', 'ip_hash', 'created_at']),
+      ('likes', array['post_id', 'client_id', 'created_at']),
+      ('places', array['title', 'location', 'feeling', 'description', 'author', 'colours', 'moods', 'image_path', 'width', 'height', 'client_id', 'ip_hash', 'created_at']),
+      ('taste_results', array['food', 'tester', 'mode', 'look', 'taste', 'different', 'reaction', 'comment', 'client_id', 'ip_hash', 'created_at']),
+      ('shared_places', array['__never__'])  -- old table name, always retired
+    ) as v(tbl, needed)
   loop
-    if exists (
-      select 1 from information_schema.columns
-      where table_schema = 'public' and table_name = t.tbl and column_name = t.marker
-    ) then
-      execute format('select exists (select 1 from public.%I)', t.tbl) into has_rows;
-      if has_rows then
-        execute format('alter table public.%I rename to %I', t.tbl, t.tbl || '_old_v0');
-        execute format('revoke all on public.%I from anon, authenticated', t.tbl || '_old_v0');
-        select coalesce(string_agg(format('drop policy %I on public.%I;', policyname, t.tbl || '_old_v0'), ' '), '')
-          into stmt from pg_policies where schemaname = 'public' and tablename = t.tbl || '_old_v0';
-        if stmt <> '' then
-          execute stmt;
-        end if;
-        raise notice 'Kept existing data: public.% renamed to public.%_old_v0', t.tbl, t.tbl;
-      else
-        execute format('drop table public.%I cascade', t.tbl);
-        raise notice 'Removed empty old table public.%', t.tbl;
+    continue when to_regclass(format('public.%I', t.tbl)) is null;
+
+    select exists (
+      select 1 from unnest(t.needed) as col
+      where not exists (
+        select 1 from information_schema.columns
+        where table_schema = 'public' and table_name = t.tbl and column_name = col
+      )
+    ) into missing;
+    continue when not missing;
+
+    execute format('select exists (select 1 from public.%I)', t.tbl) into has_rows;
+    if not has_rows then
+      execute format('drop table public.%I cascade', t.tbl);
+      raise notice 'Removed empty old table public.%', t.tbl;
+    else
+      backup := t.tbl || '_old_' || to_char(clock_timestamp(), 'YYYYMMDDHH24MISS');
+      execute format('alter table public.%I rename to %I', t.tbl, backup);
+      execute format('revoke all on public.%I from anon, authenticated', backup);
+      select coalesce(string_agg(format('drop policy %I on public.%I;', policyname, backup), ' '), '')
+        into stmt from pg_policies where schemaname = 'public' and tablename = backup;
+      if stmt <> '' then
+        execute stmt;
       end if;
+      raise notice 'Kept existing data: public.% renamed to public.%', t.tbl, backup;
     end if;
   end loop;
 end

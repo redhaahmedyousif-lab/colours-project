@@ -6,11 +6,11 @@
  *             the store when it finishes (optimistically for likes)
  *   UI      – pages subscribe to the slices they render
  */
-import { createStore } from './store.js?v=muu34gd2';
-import { backend, failureReason } from './backend.js?v=muu34gd2';
-import { load, save } from './storage.js?v=muu34gd2';
-import { family } from './palette.js?v=muu34gd2';
-import { toast } from './ui.js?v=muu34gd2';
+import { createStore } from './store.js?v=muu366i1';
+import { backend, failureReason } from './backend.js?v=muu366i1';
+import { load, save } from './storage.js?v=muu366i1';
+import { family } from './palette.js?v=muu366i1';
+import { toast } from './ui.js?v=muu366i1';
 
 const pendingNote = () =>
   failureReason() === 'offline'

@@ -3,12 +3,12 @@
  * based on the colours the visitor has paid attention to, falling back to the
  * next chapter of the colour journey.
  */
-import { esc, icons } from '../lib/dom.js?v=muu34gd2';
-import { favouriteFamily, store } from '../lib/app.js?v=muu34gd2';
-import { families } from '../lib/palette.js?v=muu34gd2';
-import { landmarks } from '../data/places.js?v=muu34gd2';
-import { chapters, nextChapter } from './journey.js?v=muu34gd2';
-import { family } from '../lib/palette.js?v=muu34gd2';
+import { esc, icons } from '../lib/dom.js?v=muu366i1';
+import { favouriteFamily, store } from '../lib/app.js?v=muu366i1';
+import { families } from '../lib/palette.js?v=muu366i1';
+import { landmarks } from '../data/places.js?v=muu366i1';
+import { chapters, nextChapter } from './journey.js?v=muu366i1';
+import { family } from '../lib/palette.js?v=muu366i1';
 
 function suggestion(from) {
   const fav = favouriteFamily();

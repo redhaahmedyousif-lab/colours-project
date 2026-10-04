@@ -3,11 +3,11 @@
  * Choosing a pin reveals that place's palette, story and emotional tone.
  * `focus` (a colour family) quietly highlights the places that share it.
  */
-import { $, $$, esc, icons } from '../lib/dom.js?v=muu34gd2';
-import { actions } from '../lib/app.js?v=muu34gd2';
-import { families, family } from '../lib/palette.js?v=muu34gd2';
-import { landmarks } from '../data/places.js?v=muu34gd2';
-import { toast } from '../lib/ui.js?v=muu34gd2';
+import { $, $$, esc, icons } from '../lib/dom.js?v=muu366i1';
+import { actions } from '../lib/app.js?v=muu366i1';
+import { families, family } from '../lib/palette.js?v=muu366i1';
+import { landmarks } from '../data/places.js?v=muu366i1';
+import { toast } from '../lib/ui.js?v=muu366i1';
 
 const MAIN =
   'M118 38 C138 30 170 34 192 40 C206 44 220 46 226 56 C236 70 234 92 230 108 C236 124 246 140 238 160 C230 178 224 200 216 230 C206 268 196 310 182 352 C174 378 166 404 158 424 C150 404 142 380 136 352 C126 304 112 260 104 216 C98 180 92 146 94 112 C96 80 102 50 118 38 Z';
