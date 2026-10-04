@@ -76,6 +76,7 @@ export const method = [
   'Show the food to each tester and ask them to rate how appetising it looks (1–5).',
   'Let them taste it and rate how good it tastes (1–5).',
   'Ask: “Did it taste different from normal?” and record their reaction and words.',
+  'Blind round: blindfold testers and repeat the tasting, so colour cannot influence them.',
 ];
 
 export const variables = {
@@ -108,18 +109,54 @@ const raw = [
   ['pancakes', 'Dana', 4, 5, 'yes', '😮', 'Sweeter and fruitier. I would eat these again.'],
 ];
 
+// Example blind-round entries: the same foods tasted blindfolded, so colour
+// could not influence them. Replace with your own blind results.
+const blindRaw = [
+  ['rice', 'Fatima', 4, 'no', '😄', 'Normal machboos. Nicely spiced.'],
+  ['rice', 'Yousif', 4, 'no', '😄', 'Tastes like home.'],
+  ['rice', 'Noor', 5, 'no', '😄', 'Really good rice.'],
+  ['milk', 'Ali', 4, 'no', '😐', 'Cold milk. Nothing strange.'],
+  ['milk', 'Maryam', 4, 'no', '😄', 'Fresh and normal.'],
+  ['milk', 'Zainab', 3, 'unsure', '😐', 'Just milk, I think.'],
+  ['eggs', 'Sara', 4, 'no', '😄', 'Soft scrambled eggs. Good.'],
+  ['eggs', 'Layla', 4, 'no', '😄', 'Tasted completely normal.'],
+  ['eggs', 'Omar', 4, 'no', '😐', 'Fine. Maybe a bit salty.'],
+  ['hummus', 'Reem', 4, 'no', '😄', 'Classic hummus.'],
+  ['hummus', 'Jassim', 4, 'no', '😄', 'Garlicky, as it should be.'],
+  ['hummus', 'Huda', 4, 'no', '😄', 'Smooth and tasty.'],
+  ['pancakes', 'Mohammed', 4, 'no', '😐', 'Ordinary pancakes.'],
+  ['pancakes', 'Aisha', 3, 'no', '😐', 'Not especially sweet.'],
+  ['pancakes', 'Dana', 4, 'no', '😄', 'Nice, normal pancakes.'],
+];
+
 const start = Date.UTC(2026, 8, 14, 10);
-export const entries = raw.map(([food, tester, look, taste, different, reaction, comment], i) => ({
-  id: `sample-${i + 1}`,
-  food,
-  tester,
-  look,
-  taste,
-  different,
-  reaction,
-  comment,
-  createdAt: start + i * 7 * 60 * 1000,
-  sample: true,
-}));
+export const entries = [
+  ...raw.map(([food, tester, look, taste, different, reaction, comment], i) => ({
+    id: `sample-${i + 1}`,
+    mode: 'visual',
+    food,
+    tester,
+    look,
+    taste,
+    different,
+    reaction,
+    comment,
+    createdAt: start + i * 7 * 60 * 1000,
+    sample: true,
+  })),
+  ...blindRaw.map(([food, tester, taste, different, reaction, comment], i) => ({
+    id: `sample-blind-${i + 1}`,
+    mode: 'blind',
+    food,
+    tester,
+    look: null,
+    taste,
+    different,
+    reaction,
+    comment,
+    createdAt: start + 3 * 3600 * 1000 + i * 6 * 60 * 1000,
+    sample: true,
+  })),
+];
 
 export const reactions = ['😄', '😐', '😮', '😬', '🤢'];

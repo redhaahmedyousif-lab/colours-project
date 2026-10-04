@@ -1,8 +1,12 @@
-import { $, $$, esc, icons } from '../lib/dom.js?v=musvnmnp';
-import { toast } from '../lib/ui.js?v=musvnmnp';
-import { glazeJar, jarSvg } from '../components/jar.js?v=musvnmnp';
-import { pageHero, statement } from '../components/sections.js?v=musvnmnp';
-import { glazes, palette, process, project, slides } from '../data/art.js?v=musvnmnp';
+import { $, $$, esc, icons } from '../lib/dom.js?v=muu1oee4';
+import { toast } from '../lib/ui.js?v=muu1oee4';
+import { glazeJar, jarSvg } from '../components/jar.js?v=muu1oee4';
+import { pageHero, statement } from '../components/sections.js?v=muu1oee4';
+import { glazes, palette, process, project, slides } from '../data/art.js?v=muu1oee4';
+import { actions } from '../lib/app.js?v=muu1oee4';
+import { mountStory, storyMarkup } from '../components/story.js?v=muu1oee4';
+import { mountDiscovery } from '../components/discovery.js?v=muu1oee4';
+import { animateStats } from '../lib/motion.js?v=muu1oee4';
 
 export function renderArt(main) {
   main.innerHTML = `
@@ -14,16 +18,18 @@ export function renderArt(main) {
       accent: 'from-emerald-glaze/30 via-clay-light/25 to-transparent',
     })}
     ${statement({ title: project.title, en: project.en })}
+    ${storyMarkup()}
     ${showcase()}
-    ${about()}
-    ${paletteSection()}
-    ${presentation()}
+    <div class="cv-auto">${about()}</div>
+    <div class="cv-auto">${paletteSection()}</div>
+    <div class="cv-auto">${presentation()}</div>
     ${reflection()}
   `;
 
   wireGlazes(main);
   wireCopy(main);
-  return wirePresentation(main);
+  const stops = [mountStory(main), wirePresentation(main), animateStats(main), mountDiscovery(main.querySelector('[data-discovery]'), '/art')];
+  return () => stops.forEach((s) => s());
 }
 
 function showcase() {
@@ -81,6 +87,7 @@ function wireGlazes(main) {
     });
     if (focus) btn.focus();
     glazeJar(svg, g);
+    actions.notice([g.body, g.band], 1);
     mood.textContent = g.mood;
   };
   buttons.forEach((b, i) => {
@@ -158,9 +165,9 @@ function paletteSection() {
                 <div class="grid grid-cols-[4rem_1fr_2.5rem] items-center gap-2 text-xs">
                   <dt class="text-ink-muted">${k}</dt>
                   <dd class="h-2 overflow-hidden rounded-full bg-surface-2" aria-hidden="true">
-                    <span class="block h-full rounded-full" style="width:${v}%;background:${c.hex}"></span>
+                    <span class="block h-full rounded-full" data-grow-to="${v}" style="width:${v}%;background:${c.hex}"></span>
                   </dd>
-                  <dd class="text-right font-medium tabular-nums">${v}%</dd>
+                  <dd class="text-right font-medium tabular-nums" data-count-to="${v}" data-suffix="%">${v}%</dd>
                 </div>`,
                 )
                 .join('')}
@@ -188,6 +195,7 @@ function wireCopy(main) {
   $$('[data-copy]', main).forEach((btn) =>
     btn.addEventListener('click', async () => {
       try {
+        actions.notice(btn.dataset.copy, 1);
         await navigator.clipboard.writeText(btn.dataset.copy);
         toast(`Copied ${btn.dataset.copy.toUpperCase()}`);
       } catch {
@@ -341,10 +349,7 @@ function reflection() {
           )
           .join('')}
       </div>
-      <div class="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
-        <p class="text-sm text-ink-muted">Next: does colour change how food tastes?</p>
-        <a href="#/taste" class="btn btn-primary">Project 2 · Colour &amp; Taste ${icons.arrow}</a>
-      </div>
+      <div class="mt-10 border-t border-line pt-6" data-discovery></div>
     </div>
   </section>`;
 }
