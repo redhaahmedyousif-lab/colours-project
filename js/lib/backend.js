@@ -7,8 +7,8 @@
  * library is loaded. All writes go through Postgres functions that validate
  * input and apply rate limits (see supabase/schema.sql).
  */
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../data/config.js?v=muu31l0z';
-import { load, save, uid } from './storage.js?v=muu31l0z';
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../data/config.js?v=muu34gd2';
+import { load, save, uid } from './storage.js?v=muu34gd2';
 
 export const clientId = (() => {
   let id = load('client-id', '');

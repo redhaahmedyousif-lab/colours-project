@@ -2,7 +2,7 @@
  * Input hygiene shared by every form. The server (supabase/schema.sql)
  * repeats these checks, so they also hold against direct API calls.
  */
-import { load, save } from './storage.js?v=muu31l0z';
+import { load, save } from './storage.js?v=muu34gd2';
 
 const CONTROL = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F​-‏‪-‮⁦-⁩]/g;
 

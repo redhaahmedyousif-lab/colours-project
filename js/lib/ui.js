@@ -1,4 +1,4 @@
-import { $, esc, icons } from './dom.js?v=muu31l0z';
+import { $, esc, icons } from './dom.js?v=muu34gd2';
 
 /** Show a short, self-dismissing status message. */
 export function toast(message) {

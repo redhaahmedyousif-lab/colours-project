@@ -141,6 +141,8 @@ alter table public.comments enable row level security;
 alter table public.likes enable row level security;
 alter table public.places enable row level security;
 alter table public.taste_results enable row level security;
+-- Internal table: RLS on with no policies, so only the database's own functions can use it.
+alter table private.rate_events enable row level security;
 
 drop policy if exists "Anyone can read comments" on public.comments;
 create policy "Anyone can read comments" on public.comments for select to anon, authenticated using (true);
