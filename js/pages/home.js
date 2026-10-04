@@ -1,10 +1,10 @@
-import { $, $$, esc, icons } from '../lib/dom.js?v=muu366i1';
-import { toast, trapFocus } from '../lib/ui.js?v=muu366i1';
-import { colourMeanings, pillars, projects } from '../data/home.js?v=muu366i1';
-import { site } from '../data/site.js?v=muu366i1';
-import { actions } from '../lib/app.js?v=muu366i1';
-import { animateStats } from '../lib/motion.js?v=muu366i1';
-import { mountDiscovery } from '../components/discovery.js?v=muu366i1';
+import { $, $$, esc, icons } from '../lib/dom.js?v=muu3b8bv';
+import { toast, trapFocus } from '../lib/ui.js?v=muu3b8bv';
+import { colourMeanings, pillars, projects } from '../data/home.js?v=muu3b8bv';
+import { site } from '../data/site.js?v=muu3b8bv';
+import { actions } from '../lib/app.js?v=muu3b8bv';
+import { animateStats } from '../lib/motion.js?v=muu3b8bv';
+import { mountDiscovery } from '../components/discovery.js?v=muu3b8bv';
 
 export function renderHome(main) {
   main.innerHTML = `

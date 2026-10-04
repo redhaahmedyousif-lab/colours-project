@@ -223,6 +223,26 @@ end
 $$;
 
 -- ---------------------------------------------------------------------------
+-- Remove any earlier versions of the API functions (whatever their
+-- arguments or return types), so they can be recreated cleanly.
+-- Functions hold no data, so this is safe.
+-- ---------------------------------------------------------------------------
+do $$
+declare
+  r record;
+begin
+  for r in
+    select p.oid::regprocedure as sig
+    from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname = 'public'
+      and p.proname in ('add_comment', 'comment_counts', 'toggle_like', 'like_counts', 'my_likes', 'add_place', 'add_taste')
+  loop
+    execute format('drop function %s cascade', r.sig);
+  end loop;
+end
+$$;
+
+-- ---------------------------------------------------------------------------
 -- Public API (called by the site through /rest/v1/rpc/...)
 -- ---------------------------------------------------------------------------
 
