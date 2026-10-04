@@ -103,11 +103,17 @@ const FRIENDLY = {
 
 /** The server could not be reached (offline, DNS, timeout, 5xx). */
 class NetworkError extends Error {
-  constructor() {
+  /** reason: 'offline' (no internet) or 'server' (Supabase reachable but not ready / erroring) */
+  constructor(reason = 'offline', detail = '') {
     super('Couldn’t reach the server.');
     this.network = true;
+    this.reason = reason;
+    this.detail = detail;
+    lastFailure = reason;
   }
 }
+let lastFailure = null;
+export const failureReason = () => lastFailure;
 
 async function request(path, { method = 'GET', body, headers = {}, raw = false, timeout = 12000 } = {}) {
   const ctrl = new AbortController();
@@ -121,24 +127,42 @@ async function request(path, { method = 'GET', body, headers = {}, raw = false, 
       body: raw ? body : body && JSON.stringify(body),
     });
   } catch {
-    throw new NetworkError();
+    throw new NetworkError(navigator.onLine === false ? 'offline' : 'server', 'request failed (no response, CORS or timeout)');
   } finally {
     clearTimeout(timer);
   }
-  if (res.status >= 500) throw new NetworkError();
+  if (res.status >= 500) throw new NetworkError('server', `HTTP ${res.status}`);
   if (res.status === 404) {
     // The function or table doesn't exist: supabase/schema.sql hasn't been run.
     schemaMissing();
-    throw new NetworkError();
+    throw new NetworkError('server', 'HTTP 404: schema not installed');
   }
   if (!res.ok) {
     const info = await res.json().catch(() => ({}));
+    if (res.status === 401 || res.status === 403) {
+      console.warn(`Colours Matter: Supabase rejected the key (HTTP ${res.status}): ${info.message ?? ''}. Check SUPABASE_ANON_KEY in js/data/config.js.`);
+      throw new NetworkError('server', `HTTP ${res.status}: ${info.message ?? 'key rejected'}`);
+    }
     const key = Object.keys(FRIENDLY).find((k) => String(info.message ?? info.error ?? '').includes(k));
     const err = new Error(FRIENDLY[key] ?? 'Something went wrong. Please try again.');
     err.code = key;
     throw err;
   }
+  lastFailure = null;
   return res.status === 204 ? null : res.json();
+}
+
+/** One-line connection report in the console, to diagnose problems quickly. */
+export async function diagnose() {
+  const t0 = performance.now();
+  try {
+    await request('/rest/v1/rpc/like_counts', { method: 'POST', body: {} });
+    console.info(`Colours Matter · Supabase connected (${Math.round(performance.now() - t0)} ms) · ${BASE}`);
+    return 'ok';
+  } catch (err) {
+    console.warn(`Colours Matter · Supabase NOT connected · ${err.detail || err.message} · ${BASE}`);
+    return err.detail || err.message;
+  }
 }
 
 let warned = false;

@@ -5,6 +5,7 @@ import { renderFooter, renderHeader, setActiveNav } from './components/layout.js
 import { startJourney } from './components/journey.js';
 import { routes, site } from './data/site.js';
 import { startEasterEggs } from './lib/eggs.js';
+import { backend, diagnose } from './lib/backend.js';
 
 // Each page is its own module, fetched the first time it is visited.
 const pages = {
@@ -66,3 +67,4 @@ document.querySelector('.skip-link').addEventListener('click', (e) => {
 
 window.addEventListener('hashchange', navigate);
 navigate();
+if (backend.mode === 'supabase') diagnose();

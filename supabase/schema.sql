@@ -370,3 +370,6 @@ create policy "Visitors can upload place photos" on storage.objects
     and name ~ '^[0-9a-f-]{36}\.jpg$'
     and private.recent_uploads() < 10
   );
+
+-- Make the API pick up the new tables and functions immediately.
+notify pgrst, 'reload schema';

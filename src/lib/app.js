@@ -7,14 +7,17 @@
  *   UI      – pages subscribe to the slices they render
  */
 import { createStore } from './store.js';
-import { backend } from './backend.js';
+import { backend, failureReason } from './backend.js';
 import { load, save } from './storage.js';
 import { family } from './palette.js';
 import { toast } from './ui.js';
 
-const OFFLINE_NOTE = 'You’re offline. Saved on this device. It will be shared automatically when you’re back online.';
+const pendingNote = () =>
+  failureReason() === 'offline'
+    ? 'You’re offline. Saved on this device. It will be shared automatically when you’re back online.'
+    : 'Saved on this device. The server isn’t responding right now, so it will be shared automatically as soon as it is.';
 const noteIfPending = (item) => {
-  if (item?.pending) toast(OFFLINE_NOTE);
+  if (item?.pending) toast(pendingNote());
   return item;
 };
 
@@ -55,7 +58,7 @@ export const actions = {
     store.set({ likes: optimistic });
     try {
       const { liked, count, pending } = await backend.toggleLike(postId, { wasLiked, count: likes.counts[postId] ?? 0 });
-      if (pending) toast(OFFLINE_NOTE);
+      if (pending) toast(pendingNote());
       const current = store.get().likes;
       store.set({
         likes: {

@@ -1,16 +1,17 @@
-import { $, observeReveals } from './lib/dom.js?v=muu2qa3h';
-import { closeActiveModal } from './lib/ui.js?v=muu2qa3h';
-import { renderFooter, renderHeader, setActiveNav } from './components/layout.js?v=muu2qa3h';
-import { startJourney } from './components/journey.js?v=muu2qa3h';
-import { routes, site } from './data/site.js?v=muu2qa3h';
-import { startEasterEggs } from './lib/eggs.js?v=muu2qa3h';
+import { $, observeReveals } from './lib/dom.js?v=muu31l0z';
+import { closeActiveModal } from './lib/ui.js?v=muu31l0z';
+import { renderFooter, renderHeader, setActiveNav } from './components/layout.js?v=muu31l0z';
+import { startJourney } from './components/journey.js?v=muu31l0z';
+import { routes, site } from './data/site.js?v=muu31l0z';
+import { startEasterEggs } from './lib/eggs.js?v=muu31l0z';
+import { backend, diagnose } from './lib/backend.js?v=muu31l0z';
 
 // Each page is its own module, fetched the first time it is visited.
 const pages = {
-  '/': () => import('./pages/home.js?v=muu2qa3h').then((m) => m.renderHome),
-  '/art': () => import('./pages/art.js?v=muu2qa3h').then((m) => m.renderArt),
-  '/taste': () => import('./pages/taste.js?v=muu2qa3h').then((m) => m.renderTaste),
-  '/blog': () => import('./pages/blog.js?v=muu2qa3h').then((m) => m.renderBlog),
+  '/': () => import('./pages/home.js?v=muu31l0z').then((m) => m.renderHome),
+  '/art': () => import('./pages/art.js?v=muu31l0z').then((m) => m.renderArt),
+  '/taste': () => import('./pages/taste.js?v=muu31l0z').then((m) => m.renderTaste),
+  '/blog': () => import('./pages/blog.js?v=muu31l0z').then((m) => m.renderBlog),
 };
 
 let cleanup = null;
@@ -65,3 +66,4 @@ document.querySelector('.skip-link').addEventListener('click', (e) => {
 
 window.addEventListener('hashchange', navigate);
 navigate();
+if (backend.mode === 'supabase') diagnose();

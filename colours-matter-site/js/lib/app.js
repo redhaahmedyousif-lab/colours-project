@@ -6,15 +6,18 @@
  *             the store when it finishes (optimistically for likes)
  *   UI      – pages subscribe to the slices they render
  */
-import { createStore } from './store.js?v=muu2qa3h';
-import { backend } from './backend.js?v=muu2qa3h';
-import { load, save } from './storage.js?v=muu2qa3h';
-import { family } from './palette.js?v=muu2qa3h';
-import { toast } from './ui.js?v=muu2qa3h';
+import { createStore } from './store.js?v=muu31l0z';
+import { backend, failureReason } from './backend.js?v=muu31l0z';
+import { load, save } from './storage.js?v=muu31l0z';
+import { family } from './palette.js?v=muu31l0z';
+import { toast } from './ui.js?v=muu31l0z';
 
-const OFFLINE_NOTE = 'You’re offline. Saved on this device. It will be shared automatically when you’re back online.';
+const pendingNote = () =>
+  failureReason() === 'offline'
+    ? 'You’re offline. Saved on this device. It will be shared automatically when you’re back online.'
+    : 'Saved on this device. The server isn’t responding right now, so it will be shared automatically as soon as it is.';
 const noteIfPending = (item) => {
-  if (item?.pending) toast(OFFLINE_NOTE);
+  if (item?.pending) toast(pendingNote());
   return item;
 };
 
@@ -55,7 +58,7 @@ export const actions = {
     store.set({ likes: optimistic });
     try {
       const { liked, count, pending } = await backend.toggleLike(postId, { wasLiked, count: likes.counts[postId] ?? 0 });
-      if (pending) toast(OFFLINE_NOTE);
+      if (pending) toast(pendingNote());
       const current = store.get().likes;
       store.set({
         likes: {
