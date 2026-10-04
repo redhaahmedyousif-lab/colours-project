@@ -1,12 +1,12 @@
-import { $, $$, esc, icons } from '../lib/dom.js?v=muu2qa3h';
-import { toast } from '../lib/ui.js?v=muu2qa3h';
-import { glazeJar, jarSvg } from '../components/jar.js?v=muu2qa3h';
-import { pageHero, statement } from '../components/sections.js?v=muu2qa3h';
-import { glazes, palette, process, project, slides } from '../data/art.js?v=muu2qa3h';
-import { actions } from '../lib/app.js?v=muu2qa3h';
-import { mountStory, storyMarkup } from '../components/story.js?v=muu2qa3h';
-import { mountDiscovery } from '../components/discovery.js?v=muu2qa3h';
-import { animateStats } from '../lib/motion.js?v=muu2qa3h';
+import { $, $$, esc, icons } from '../lib/dom.js?v=muu31l0z';
+import { toast } from '../lib/ui.js?v=muu31l0z';
+import { glazeJar, jarSvg } from '../components/jar.js?v=muu31l0z';
+import { pageHero, statement } from '../components/sections.js?v=muu31l0z';
+import { glazes, palette, process, project, slides } from '../data/art.js?v=muu31l0z';
+import { actions } from '../lib/app.js?v=muu31l0z';
+import { mountStory, storyMarkup } from '../components/story.js?v=muu31l0z';
+import { mountDiscovery } from '../components/discovery.js?v=muu31l0z';
+import { animateStats } from '../lib/motion.js?v=muu31l0z';
 
 export function renderArt(main) {
   main.innerHTML = `
