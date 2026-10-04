@@ -1,15 +1,15 @@
-import { $, $$, esc, icons, timeAgo } from '../lib/dom.js?v=muu366i1';
-import { load, save } from '../lib/storage.js?v=muu366i1';
-import { openModal, toast } from '../lib/ui.js?v=muu366i1';
-import { actions, store } from '../lib/app.js?v=muu366i1';
-import { cleanText, isHex, rateLimit, reencode, validateImage, blobToDataUrl, IMAGE_RULES } from '../lib/sanitize.js?v=muu366i1';
-import { extractPalette, readMood } from '../lib/palette.js?v=muu366i1';
-import { animateStats } from '../lib/motion.js?v=muu366i1';
-import { pageHero, statement } from '../components/sections.js?v=muu366i1';
-import { abstractScene, sceneSvg } from '../components/scenes.js?v=muu366i1';
-import { mountMap } from '../components/map.js?v=muu366i1';
-import { mountDiscovery } from '../components/discovery.js?v=muu366i1';
-import { posts as seedPosts, project, seedComments } from '../data/blog.js?v=muu366i1';
+import { $, $$, esc, icons, timeAgo } from '../lib/dom.js?v=muu3b8bv';
+import { load, save } from '../lib/storage.js?v=muu3b8bv';
+import { openModal, toast } from '../lib/ui.js?v=muu3b8bv';
+import { actions, store } from '../lib/app.js?v=muu3b8bv';
+import { cleanText, isHex, rateLimit, reencode, validateImage, blobToDataUrl, IMAGE_RULES } from '../lib/sanitize.js?v=muu3b8bv';
+import { extractPalette, readMood } from '../lib/palette.js?v=muu3b8bv';
+import { animateStats } from '../lib/motion.js?v=muu3b8bv';
+import { pageHero, statement } from '../components/sections.js?v=muu3b8bv';
+import { abstractScene, sceneSvg } from '../components/scenes.js?v=muu3b8bv';
+import { mountMap } from '../components/map.js?v=muu3b8bv';
+import { mountDiscovery } from '../components/discovery.js?v=muu3b8bv';
+import { posts as seedPosts, project, seedComments } from '../data/blog.js?v=muu3b8bv';
 
 const view = { mood: 'All', sort: 'latest' };
 const MOOD_OPTIONS = ['Energetic', 'Peaceful', 'Proud', 'Hopeful', 'Joyful', 'Calm', 'Nostalgic', 'Free', 'Amazed', 'Curious', 'Awe', 'Tranquil'];

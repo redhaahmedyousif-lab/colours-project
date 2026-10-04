@@ -1,11 +1,11 @@
-import { $, $$, esc, icons, timeAgo } from '../lib/dom.js?v=muu366i1';
-import { toast } from '../lib/ui.js?v=muu366i1';
-import { actions, store } from '../lib/app.js?v=muu366i1';
-import { cleanText, rateLimit } from '../lib/sanitize.js?v=muu366i1';
-import { animateStats } from '../lib/motion.js?v=muu366i1';
-import { pageHero, statement } from '../components/sections.js?v=muu366i1';
-import { mountDiscovery } from '../components/discovery.js?v=muu366i1';
-import { entries as seedEntries, foods, isSampleData, method, project, reactions, variables } from '../data/taste.js?v=muu366i1';
+import { $, $$, esc, icons, timeAgo } from '../lib/dom.js?v=muu3b8bv';
+import { toast } from '../lib/ui.js?v=muu3b8bv';
+import { actions, store } from '../lib/app.js?v=muu3b8bv';
+import { cleanText, rateLimit } from '../lib/sanitize.js?v=muu3b8bv';
+import { animateStats } from '../lib/motion.js?v=muu3b8bv';
+import { pageHero, statement } from '../components/sections.js?v=muu3b8bv';
+import { mountDiscovery } from '../components/discovery.js?v=muu3b8bv';
+import { entries as seedEntries, foods, isSampleData, method, project, reactions, variables } from '../data/taste.js?v=muu3b8bv';
 
 const foodById = Object.fromEntries(foods.map((f) => [f.id, f]));
 const differentLabel = { yes: 'Yes', no: 'No', unsure: 'Not sure' };
