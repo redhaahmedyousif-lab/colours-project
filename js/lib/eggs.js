@@ -7,10 +7,10 @@
  *    colour, the way a colour-free world would look. Type it again to return.
  *  - Developers who open the console get a short note.
  */
-import { $ } from './dom.js?v=muu1oee4';
-import { toast } from './ui.js?v=muu1oee4';
-import { store } from './app.js?v=muu1oee4';
-import { families } from './palette.js?v=muu1oee4';
+import { $ } from './dom.js?v=muu24ax7';
+import { toast } from './ui.js?v=muu24ax7';
+import { store } from './app.js?v=muu24ax7';
+import { families } from './palette.js?v=muu24ax7';
 
 const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
 

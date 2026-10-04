@@ -1,11 +1,15 @@
 /**
- * Backend configuration.
+ * Backend configuration (public, safe to commit).
  *
- * Leave both values empty to run in local mode (everything is saved in the
- * visitor's own browser). To share likes, comments, places and taste results
- * between all visitors, create a Supabase project, run supabase/schema.sql in
- * its SQL editor, then paste the project URL and the public "anon" key here.
- * The anon key is designed to be public; row-level security protects the data.
+ * Only the project URL and the PUBLISHABLE key belong here. Both are designed
+ * to be public: row-level security and the functions in supabase/schema.sql
+ * decide what visitors can do.
+ *
+ * NEVER put the secret / service_role key (sb_secret_…) in this file or
+ * anywhere in the website. It bypasses all security rules. Keep it only in
+ * the Supabase dashboard or a private server.
+ *
+ * Leave both values empty to run in local mode (data stays in each browser).
  */
-export const SUPABASE_URL = ''; // e.g. 'https://abcdefgh.supabase.co'
-export const SUPABASE_ANON_KEY = '';
+export const SUPABASE_URL = 'https://qndtqhjtuqerdcayebry.supabase.co';
+export const SUPABASE_ANON_KEY = 'sb_publishable_YYYPWKUTNndTXYulYnjssA_decQRKOx';
