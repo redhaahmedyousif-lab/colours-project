@@ -1,4 +1,4 @@
-import { esc, icons } from '../lib/dom.js?v=muu31l0z';
+import { esc, icons } from '../lib/dom.js?v=muu34gd2';
 
 /** Shared hero banner for the project pages. */
 export function pageHero({ number, kicker, title, text, accent }) {
